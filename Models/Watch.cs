@@ -1,22 +1,40 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DialDesk.Server.Models
 {
     public class Watch
     {
         [Key]
-        public string sku_id { get; set; }
+        public string SkuId { get; set; }
 
-        public string model_id {get; set; }
+        public int ModelId { get; set; }
+        [ForeignKey("ModelId")]
+        public required Model Model { get; set; }
 
-        public string? serial_no { get; set; }
+        [Required]
+        public string? SerialNo { get; set; }
 
-        public string? color { get; set; }
+        public string? Color { get; set; }
 
-        public string? strap_metrial { get; set; }
+        public string? StrapMetrial { get; set; }
 
-        public DateTime recieved_at { get; set; }
+        public int? WaterResistanceM { get; set; }
 
-        public DateTime Updated_at { get; set; }
+        [Required]
+        public decimal CostPrice { get; set; }
+
+        [Required]
+        public decimal SellingPrice { get; set; }
+
+        [Required]
+        public Status Status { get; set; }
+
+        public string? ImageryUrl { get; set; }
+
+        public DateTime RecievedAt { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+
     }
 }

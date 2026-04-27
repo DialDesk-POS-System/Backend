@@ -1,6 +1,8 @@
 ﻿namespace DialDesk.Server.Models
 {
-    public class Category
+    public enum Category
     {
+        hand_watches,
+        wall_clocks,
     }
 }

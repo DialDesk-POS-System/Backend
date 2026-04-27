@@ -1,6 +1,10 @@
 ﻿namespace DialDesk.Server.Models
 {
-    public class Status
+    public enum Status
     {
+        Available,
+        Sold,
+        Reserved,
+        Returned
     }
 }

@@ -1,6 +1,10 @@
 ﻿namespace DialDesk.Server.Models
 {
-    public class PaymentMethod
+    public enum PaymentMethod
     {
+        cash,
+        credit_card,
+        debit_card,
+        bank_transfer,
     }
 }
