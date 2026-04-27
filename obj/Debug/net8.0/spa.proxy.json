@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:12222",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\ASUS\\source\\repos\\DialDesk\\DialDesk.Server\\..\\dialdesk.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}
