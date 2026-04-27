@@ -12,17 +12,23 @@ namespace DialDesk.Server.Models
         [ForeignKey("ModelId")]
         public required Model Model { get; set; }
 
-        [Required]
+        public Guid ImportId { get; set; }
+        public BulkImport BulkImport { get; set; }
+
         public string? SerialNo { get; set; }
 
         public string? Color { get; set; }
 
-        public string? StrapMetrial { get; set; }
+        public string? StrapMaterial { get; set; }
 
         public int? WaterResistanceM { get; set; }
 
         [Required]
         public decimal CostPrice { get; set; }
+
+        public SaleItem? SaleItem { get; set; }
+
+        public Warranty? Warranty { get; set; }
 
         [Required]
         public decimal SellingPrice { get; set; }

@@ -12,7 +12,7 @@ namespace DialDesk.Server.Models
         public string ModelNo { get; set; }
 
         [Required]
-        public Category category { get; set; }
+        public Category Category { get; set; }
 
         public int BrandId { get; set; }
         [ForeignKey("BrandId")]

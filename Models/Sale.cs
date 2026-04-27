@@ -2,7 +2,7 @@
 
 namespace DialDesk.Server.Models
 {
-    public class Sales
+    public class Sale
     {
         [Key]
         public int Id { get; set; }
@@ -26,12 +26,14 @@ namespace DialDesk.Server.Models
         [Required]
         public PaymentMethod PaymentMethod { get; set; }
 
-        public string? Notes{ get; set; }
+        public string? Notes { get; set; }
 
         public string? CustomerName { get; set; }
 
         [EmailAddress]
         public string? CustomerEmail { get; set; }
         public string? CustomerPhone { get; set; }
+
+        public List<SaleItem> SaleItems { get; set; } = [];
     }
 }
