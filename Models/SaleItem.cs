@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DialDesk.Server.Models
@@ -40,7 +40,5 @@ namespace DialDesk.Server.Models
 
         [Required]
         public DateTime CreatedAt { get; set; }
-
-
     }
 }
