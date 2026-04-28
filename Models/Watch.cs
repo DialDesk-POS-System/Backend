@@ -12,7 +12,8 @@ namespace DialDesk.Server.Models
         [ForeignKey("ModelId")]
         public required Model Model { get; set; }
 
-        public Guid ImportId { get; set; }
+        public int ImportId { get; set; }
+        [ForeignKey("ImportId")]
         public BulkImport BulkImport { get; set; }
 
         public string? SerialNo { get; set; }
