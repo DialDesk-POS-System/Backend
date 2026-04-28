@@ -17,7 +17,6 @@ namespace DialDesk.Server.Models
 
         public Boolean IsActive { get; set; }
 
-        [InverseProperty("Brand")]
         public List<Model> Models { get; set; } = [];
 
     }

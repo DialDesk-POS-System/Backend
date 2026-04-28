@@ -6,14 +6,14 @@ namespace DialDesk.Server.Models
     public class Watch
     {
         [Key]
-        public string SkuId { get; set; }
+        public string Id { get; set; }
 
         public int ModelId { get; set; }
         [ForeignKey("ModelId")]
         public required Model Model { get; set; }
 
-        public Guid ImportId { get; set; }
-
+        public int ImportId { get; set; }
+        [ForeignKey("ImportId")]
         public BulkImport BulkImport { get; set; }
 
         public string? SerialNo { get; set; }
