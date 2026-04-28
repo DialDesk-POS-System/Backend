@@ -6,23 +6,30 @@ namespace DialDesk.Server.Models
     public class Watch
     {
         [Key]
-        public string SkuId { get; set; }
+        public string Id { get; set; }
 
         public int ModelId { get; set; }
         [ForeignKey("ModelId")]
         public required Model Model { get; set; }
 
-        [Required]
+        public int ImportId { get; set; }
+        [ForeignKey("ImportId")]
+        public BulkImport BulkImport { get; set; }
+
         public string? SerialNo { get; set; }
 
         public string? Color { get; set; }
 
-        public string? StrapMetrial { get; set; }
+        public string? StrapMaterial { get; set; }
 
         public int? WaterResistanceM { get; set; }
 
         [Required]
         public decimal CostPrice { get; set; }
+
+        public SaleItem? SaleItem { get; set; }
+
+        public Warranty? Warranty { get; set; }
 
         [Required]
         public decimal SellingPrice { get; set; }

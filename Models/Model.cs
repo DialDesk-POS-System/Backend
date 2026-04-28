@@ -12,7 +12,7 @@ namespace DialDesk.Server.Models
         public string ModelNo { get; set; }
 
         [Required]
-        public Category category { get; set; }
+        public Category Category { get; set; }
 
         public int BrandId { get; set; }
         [ForeignKey("BrandId")]
@@ -22,14 +22,10 @@ namespace DialDesk.Server.Models
         public string ModelName { get; set; }
 
         [Required]
-        public decimal BasePrice { get; set; }
-
-        [Required]
         public int WarrantyPeriod { get; set; }
 
         public Boolean IsActive { get; set; }
 
-        [InverseProperty("Model")]
         public List<Watch> Watches { get; set; } = [];
     }
 }

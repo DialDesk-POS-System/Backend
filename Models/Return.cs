@@ -25,7 +25,5 @@ namespace DialDesk.Server.Models
         [Required]
         public DateTime ReturnDate { get; set; }
 
-
-
     }
 }
