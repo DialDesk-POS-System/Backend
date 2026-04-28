@@ -10,6 +10,10 @@ namespace DialDesk.Server.Models
         [Required]
         public decimal PurchasePrice { get; set; }
 
+        public int ModelId { get; set; }
+        [ForeignKey("ModelId")]
+        public Model Model { get; set; }
+
         [Required]
         public decimal SellingPrice { get; set; }
 
