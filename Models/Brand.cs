@@ -14,9 +14,11 @@ namespace DialDesk.Server.Models
         public string ManufacturedCountry { get; set; }
 
         public string LogoUrl { get; set; }
+
         public Boolean IsActive { get; set; }
 
         [InverseProperty("Brand")]
         public List<Model> Models { get; set; } = [];
+
     }
 }

@@ -13,6 +13,7 @@ namespace DialDesk.Server.Models
         public required Model Model { get; set; }
 
         public Guid ImportId { get; set; }
+
         public BulkImport BulkImport { get; set; }
 
         public string? SerialNo { get; set; }
