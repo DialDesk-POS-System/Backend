@@ -9,13 +9,12 @@ namespace DialDesk.Server.Models
         public int Id { get; set; }
 
         [Required]
-        public Warranty Warranty { get; set; }
-
-        [Required]
         public int SaleId { get; set; }
 
         [ForeignKey("SaleId")]
         public Sale Sale { get; set; }
+
+        public Warranty? Warranty { get; set; }
 
         [Required]
         public string WatchId { get; set; }
@@ -33,8 +32,10 @@ namespace DialDesk.Server.Models
         [Required]
         public decimal LineTotal { get; set; }
 
+        [InverseProperty("OriginalSaleItem")]
         public Return? ReturnAsOriginal { get; set; }
 
+        [InverseProperty("NewSaleItem")]
         public Return? ReturnAsNew { get; set; }
 
         [Required]

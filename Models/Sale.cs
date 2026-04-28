@@ -23,6 +23,8 @@ namespace DialDesk.Server.Models
         [Required]
         public decimal TotalAmount { get; set; }
 
+        public string? InvoicePdfUrl { get; set; }
+
         [Required]
         public PaymentMethod PaymentMethod { get; set; }
 

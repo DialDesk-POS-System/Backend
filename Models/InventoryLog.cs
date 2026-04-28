@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DialDesk.Server.Models
 {
@@ -9,6 +10,8 @@ namespace DialDesk.Server.Models
 
         [Required]
         public string WatchId { get; set; }
+        [ForeignKey("WatchId")]
+        public Watch Watch { get; set; }
 
         [Required]
         public ChangeType ChangeType { get; set; }

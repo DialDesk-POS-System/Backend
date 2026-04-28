@@ -4,7 +4,7 @@
     {
         Available,
         Sold,
-        Reserved,
-        Returned
+        Returned,
+        Damaged
     }
 }
