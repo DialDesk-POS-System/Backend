@@ -27,6 +27,5 @@ namespace DialDesk.Server.Models
         public Boolean IsActive { get; set; }
 
         public List<Watch> Watches { get; set; } = [];
-        public List<ModelPriceHistory> PriceHistoryRecords { get; set; } = [];
     }
 }
