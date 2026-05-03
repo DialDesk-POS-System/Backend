@@ -1,16 +1,16 @@
-﻿using DialDesk.Server.Models;
+﻿using DialDesk.Server.DTOs;
+using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
 {
     public interface IModelPriceHistory
     {
-        Task<List<ModelPriceHistory>> GetModelPriceHistoryRecordsAsync();
-        Task<ModelPriceHistory> GetModelPriceHistoryRecordByIdAsync(int id);
-        Task<List<ModelPriceHistory>> GetModelPriceHistoryRecordsByModelAsync(int modelId);
-        Task<ModelPriceHistory> CreateModelPriceHistoryRecordAsync(ModelPriceHistory record);
-        Task<ModelPriceHistory> UpdateModelPriceHistoryRecordAsync(int id, ModelPriceHistory record);
-        Task<bool> DeleteModelPriceHistoryRecordAsync(int id);
-        Task<List<ModelPriceHistory>> SearchRecordsAsync(ModelPriceHistory record);
-        Task<List<ModelPriceHistory>> GetModelPriceHistoryNotesAsync(int id);
+        Task<List<ModelPriceHistory>> GetAllRecordsAsync();
+        Task<ModelPriceHistory?> GetRecordByIdAsync(int id);
+        Task<List<ModelPriceHistory>> GetRecordsByModelAsync(int modelId);
+        Task<ModelPriceHistory?> CreateRecordAsync(ModelPriceHistory record);
+        Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelPriceHistory record);
+        Task<bool> DeleteRecordAsync(int id);
+        Task<List<ModelPriceHistory>> SearchRecordsAsync(ModelPriceHistoryRecordSearch filter);
     }
 }
