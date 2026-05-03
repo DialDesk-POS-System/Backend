@@ -1,6 +1,6 @@
 ﻿namespace DialDesk.Server.Services
 {
-    public class SaleItem : ISale
+    public class SaleItem
     {
     }
 }
