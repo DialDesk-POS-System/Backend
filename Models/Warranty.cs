@@ -27,7 +27,6 @@ namespace DialDesk.Server.Models
         [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
         public DateTime? ClaimDate { get; set; }
     }
 }
