@@ -21,9 +21,6 @@ namespace DialDesk.Server.Models
         [Required]
         public string ModelName { get; set; }
 
-        [Required]
-        public int WarrantyPeriod { get; set; }
-
         public Boolean IsActive { get; set; }
 
         public List<Watch> Watches { get; set; } = [];

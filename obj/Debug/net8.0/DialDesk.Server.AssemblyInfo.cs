@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DialDesk.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bfdbee8da010930e7b4042957e14256f463b9361")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5b35f99cc4e7bd257845e3f792b588af50b50da")]
 [assembly: System.Reflection.AssemblyProductAttribute("DialDesk.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DialDesk.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

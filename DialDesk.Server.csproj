@@ -32,4 +32,11 @@
     </ProjectReference>
   </ItemGroup>
 
+<<<<<<< HEAD
+=======
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
+>>>>>>> 15a314bb040d7f76fa0b073e3d9783c77c251cb9
 </Project>
