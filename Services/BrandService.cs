@@ -1,10 +1,11 @@
 ﻿using DialDesk.Server.Data;
+using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DialDesk.Server.Services
 {
-    public class BrandService
+    public class BrandService : IBrandService
     {
         private readonly AppDbContext _context;
         private readonly ILogger<BrandService> _logger;

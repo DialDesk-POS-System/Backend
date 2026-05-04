@@ -1,7 +1,22 @@
 using DialDesk.Server.Data;
+using DialDesk.Server.Interfaces;
+using DialDesk.Server.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddScoped<IWatchService, WatchService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<IWarrantyService, WarrantyService>();
+builder.Services.AddScoped<IReturnService, ReturnService>();
+builder.Services.AddScoped<IInventoryLogService, InventoryLogService>();
+builder.Services.AddScoped<IBulkImportService, BulkImportService>();
+builder.Services.AddScoped<ISaleItemService, SaleItemService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IModelPriceHistoryService, ModelPriceHistroyService>();
+builder.Services.AddScoped<IModelService, ModelService>();
+
 
 // Add services to the container.
 builder.Services.AddControllers();

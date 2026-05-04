@@ -3,7 +3,7 @@ using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
 {
-    public interface ISaleInterface
+    public interface ISaleService
     {
         Task<List<Sale>> GetAllSalesAsync();
         Task<Sale?> GetSaleByIdAsync(int id);

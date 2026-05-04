@@ -32,6 +32,7 @@
     </ProjectReference>
   </ItemGroup>
 
+
   <ItemGroup>
     <Folder Include="NewFolder\" />
   </ItemGroup>

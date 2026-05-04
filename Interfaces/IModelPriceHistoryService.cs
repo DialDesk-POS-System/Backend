@@ -3,7 +3,7 @@ using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
 {
-    public interface IModelPriceHistory
+    public interface IModelPriceHistoryService
     {
         Task<List<ModelPriceHistory>> GetAllRecordsAsync();
         Task<ModelPriceHistory?> GetRecordByIdAsync(int id);
