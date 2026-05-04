@@ -14,7 +14,7 @@ namespace DialDesk.Server.Models
         [ForeignKey("OriginalSaleItemId")]
         public SaleItem OriginalSaleItem { get; set; }
 
-        public int NewSaleItemId { get; set; }
+        public int? NewSaleItemId { get; set; }
         [ForeignKey("NewSaleItemId")]
         public SaleItem? NewSaleItem { get; set; }
 

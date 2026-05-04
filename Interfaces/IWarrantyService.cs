@@ -9,5 +9,7 @@ namespace DialDesk.Server.Interfaces
         Task<Warranty?> GetBySaleItemIdAsync(int saleItemId);
         Task<Warranty?> GetByWatchIdAsync(string watchId);
         Task ClaimWarrantyAsync(int warrantyId, DateTime claimDate);
+
+        Task<bool> DeleteWarrentyAsync(int warrantyId);
     }
 }

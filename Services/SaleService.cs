@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DialDesk.Server.Services
 {
-    public class SaleService : ISaleInterface
+    public class SaleService : ISaleService
     {
         private readonly AppDbContext _context;
         private readonly ILogger<SaleService> _logger;

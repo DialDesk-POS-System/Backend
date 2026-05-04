@@ -9,5 +9,6 @@ namespace DialDesk.Server.Interfaces
         Task<List<InventoryLog>> GetAllAsync();
         Task<List<InventoryLog>> GetByWatchIdAsync(string watchId);
         Task<List<InventoryLog>> GetByChangeTypeAsync(ChangeType changeType);
+        Task<bool> DeleteAsync(int id);
     }
 }
