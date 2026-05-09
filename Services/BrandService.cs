@@ -1,4 +1,5 @@
 ﻿using DialDesk.Server.Data;
+using DialDesk.Server.DTOs.Brand;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -93,7 +94,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Brand?> UpdateBrandAsync(int id, Brand brand)
+        public async Task<Brand?> UpdateBrandAsync(int id, BrandInDto brand)
         {
             try
             {
