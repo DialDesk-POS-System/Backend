@@ -9,7 +9,7 @@ namespace DialDesk.Server.Interfaces
         Task<ModelPriceHistory?> GetRecordByIdAsync(int id);
         Task<List<ModelPriceHistory>> GetRecordsByModelAsync(int modelId);
         Task<ModelPriceHistory?> CreateRecordAsync(ModelPriceHistory record);
-        Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelPriceHistory record);
+        Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryDto record);
         Task<bool> DeleteRecordAsync(int id);
         Task<List<ModelPriceHistory>> SearchRecordsAsync(ModelPriceHistoryRecordSearch filter);
     }

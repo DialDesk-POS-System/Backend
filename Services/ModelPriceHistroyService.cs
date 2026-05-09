@@ -67,6 +67,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
+                record.CreatedAt = DateTime.UtcNow;
                 _context.ModelPriceHistories.Add(record);
                 await _context.SaveChangesAsync();
                 return record;
@@ -78,7 +79,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelPriceHistory record)
+        public async Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryDto record)
         {
             try
             {
@@ -93,7 +94,7 @@ namespace DialDesk.Server.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error updating model price history record with id: {record.Id}");
+                _logger.LogError(ex, $"Error updating model price history record");
                 throw;
             }
         }

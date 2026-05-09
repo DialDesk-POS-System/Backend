@@ -1,4 +1,5 @@
 ﻿using DialDesk.Server.Data;
+using DialDesk.Server.DTOs.Model;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -99,7 +100,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Model?> UpdateModelAsync(int id, Model model)
+        public async Task<Model?> UpdateModelAsync(int id, ModelInDto model)
         {
             try
             {

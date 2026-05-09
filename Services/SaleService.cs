@@ -1,5 +1,6 @@
 ﻿using DialDesk.Server.Data;
 using DialDesk.Server.DTOs;
+using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -80,7 +81,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Sale?> UpdateSaleAsync(int id, Sale sale)
+        public async Task<Sale?> UpdateSaleAsync(int id, SaleUpdateDto sale)
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using DialDesk.Server.Data;
+using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,22 @@ namespace DialDesk.Server.Services
             }
         }
 
+        public async Task<List<Watch>> GetWatchesByBrandAsync(int brandId)
+        {
+            try
+            {
+                return await _context.Watches
+                .Include(w => w.Model)
+                .Where(w => w.Model.BrandId == brandId)
+                .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching watches by brand");
+                throw;
+            }
+        }
+
         public async Task<Watch?> GetWatchBySerialNumberAsync(string serialNumber)
         {
             try
@@ -87,6 +104,7 @@ namespace DialDesk.Server.Services
             {
                 watch.RecievedAt = DateTime.UtcNow;
                 watch.UpdatedAt = DateTime.UtcNow;
+                watch.Status = Status.Available;
                 _context.Watches.Add(watch);
                 await _context.SaveChangesAsync();
                 return watch;
@@ -98,7 +116,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Watch?> UpdateWatchAsync(string id, Watch watch)
+        public async Task<Watch?> UpdateWatchAsync(string id, WatchUpdateDto watch)
         {
             try
             {
@@ -109,17 +127,7 @@ namespace DialDesk.Server.Services
                     return null;
                 }
 
-                existingWatch.ModelId = watch.ModelId;
-                existingWatch.SerialNo = watch.SerialNo;
-                existingWatch.Color = watch.Color;
-                existingWatch.StrapMaterial = watch.StrapMaterial;
-                existingWatch.WaterResistanceM = watch.WaterResistanceM;
-                existingWatch.CostPrice = watch.CostPrice;
-                existingWatch.SellingPrice = watch.SellingPrice;
-                existingWatch.Status = watch.Status;
-                existingWatch.ImageryUrl = watch.ImageryUrl;
-                existingWatch.UpdatedAt = DateTime.UtcNow;
-
+                _context.Entry(existingWatch).CurrentValues.SetValues(watch);
                 await _context.SaveChangesAsync();
                 return existingWatch;
             }
