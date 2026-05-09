@@ -1,4 +1,5 @@
-﻿using DialDesk.Server.Models;
+﻿using DialDesk.Server.DTOs.Brand;
+using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
 {
@@ -9,7 +10,7 @@ namespace DialDesk.Server.Interfaces
         Task<List<Brand>> GetBrandByNameAsync(string name);
         Task<List<Brand>> GetBrandsActiveAsync();
         Task<Brand?> CreateBrandAsync(Brand brand);
-        Task<Brand?> UpdateBrandAsync(int id, Brand brand);
+        Task<Brand?> UpdateBrandAsync(int id, BrandInDto brand);
         Task<bool> DeleteBrandAsync(int id);
     }
 }
