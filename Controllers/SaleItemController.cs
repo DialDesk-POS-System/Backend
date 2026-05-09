@@ -13,7 +13,7 @@ namespace DialDesk.Server.Controllers
 
         private readonly ISaleItemService _saleItemService;
 
-        public SlaeItemController(ISaleItemService saleItemService)
+        public SaleItemController(ISaleItemService saleItemService)
         {
             _saleItemService = saleItemService;
         }

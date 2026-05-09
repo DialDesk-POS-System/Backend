@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialDesk.Server", "DialDesk.Server.csproj", "{9727A432-D2D4-7C84-8E56-2B7F518461AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9727A432-D2D4-7C84-8E56-2B7F518461AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9727A432-D2D4-7C84-8E56-2B7F518461AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9727A432-D2D4-7C84-8E56-2B7F518461AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9727A432-D2D4-7C84-8E56-2B7F518461AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {16F70091-094B-4DF3-A621-296AC45AA81E}
+	EndGlobalSection
+EndGlobal
