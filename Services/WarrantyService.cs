@@ -14,6 +14,7 @@ namespace DialDesk.Server.Services
         {
             _db = db;
             _logger = logger;
+
         }
 
         public async Task<Warranty> CreateWarrantyAsync(Warranty warranty)
@@ -91,6 +92,7 @@ namespace DialDesk.Server.Services
             try
             {
             var warranty = await _db.Warranties.FindAsync(warrantyId);
+
             if (warranty != null)
             {
                 warranty.ClaimDate = claimDate;
@@ -107,6 +109,7 @@ namespace DialDesk.Server.Services
 
         public async Task<bool> DeleteWarrentyAsync(int warrantyId)
         {
+
             try
             {
                 var existwarrenty = await _db.Warranties.FindAsync(warrantyId);
@@ -119,6 +122,7 @@ namespace DialDesk.Server.Services
                 await _db.SaveChangesAsync();
                 return true;
             }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error DeleteWarrentyAsync ");
