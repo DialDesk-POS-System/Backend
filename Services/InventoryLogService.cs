@@ -9,9 +9,9 @@ namespace DialDesk.Server.Services
     public class InventoryLogService : IInventoryLogService
     {
         public readonly AppDbContext _context;
-        public readonly Logger<ReturnService> _logger;
+        public readonly ILogger<ReturnService> _logger;
 
-        public InventoryLogService(AppDbContext context, Logger<ReturnService> logger)
+        public InventoryLogService(AppDbContext context, ILogger<ReturnService> logger)
         {
             _context = context;
             _logger = logger;

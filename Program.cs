@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddScoped<IWatchService, WatchService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<IWarrantyService, WarrantyService>();

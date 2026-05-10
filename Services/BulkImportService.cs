@@ -9,9 +9,9 @@ namespace DialDesk.Server.Services
     public class BulkImportService : IBulkImportService
     {
         public readonly AppDbContext _context;
-        public readonly Logger<ReturnService> _logger;
+        public readonly ILogger<ReturnService> _logger;
 
-        public BulkImportService(AppDbContext context, Logger<ReturnService> logger)
+        public BulkImportService(AppDbContext context, ILogger<ReturnService> logger)
         {
             _context = context;
             _logger = logger;

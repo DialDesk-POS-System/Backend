@@ -10,7 +10,7 @@ namespace DialDesk.Server.Services
         public readonly AppDbContext _context;
         public readonly ILogger<ReturnService> _logger;
 
-        public ReturnService(AppDbContext context, Logger<ReturnService> logger)
+        public ReturnService(AppDbContext context, ILogger<ReturnService> logger)
         {
             _context = context;
             _logger = logger;
