@@ -17,6 +17,7 @@ builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IModelPriceHistoryService, ModelPriceHistroyService>();
 builder.Services.AddScoped<IModelService, ModelService>();
 
+builder.Services.AddAutoMapper(typeof(Program));
 
 // Add services to the container.
 builder.Services.AddControllers();

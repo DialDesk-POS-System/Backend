@@ -1,9 +1,12 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace DialDesk.Server.DTOs.Brand
 {
     public class BrandOutDto
     {
         public int Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string ManufacturedCountry { get; set; }
