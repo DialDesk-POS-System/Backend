@@ -18,6 +18,23 @@ builder.Services.AddScoped<IModelService, ModelService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:3000", 
+            "http://localhost:5173", 
+            "http://localhost:4200",
+            "http://localhost:5174",
+            "http://localhost:8080"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

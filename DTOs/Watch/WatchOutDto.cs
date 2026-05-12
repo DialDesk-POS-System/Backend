@@ -13,6 +13,8 @@ namespace DialDesk.Server.DTOs.Watch
 
         [Required]
         public string BrandName{ get; set; }
+
+        public Category Category {get; set;}
         public string? SerialNo { get; set; }
         public string? Color { get; set; }
         public string? StrapMaterial { get; set; }
