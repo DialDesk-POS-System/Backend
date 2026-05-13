@@ -6,7 +6,7 @@ namespace DialDesk.Server.Models
     public class Watch
     {
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public int ModelId { get; set; }
         [ForeignKey("ModelId")]

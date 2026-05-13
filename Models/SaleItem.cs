@@ -17,7 +17,7 @@ namespace DialDesk.Server.Models
         public Warranty? Warranty { get; set; }
 
         [Required]
-        public string WatchId { get; set; }
+        public Guid WatchId { get; set; }
         public Watch Watch { get; set; }
 
         [Required]

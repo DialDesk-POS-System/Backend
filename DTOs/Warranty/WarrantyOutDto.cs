@@ -6,7 +6,7 @@
 
         public int SaleItemId { get; set; }
 
-        public string WatchId { get; set; }
+        public Guid WatchId { get; set; }
 
         public DateTime StartDate { get; set; }
 

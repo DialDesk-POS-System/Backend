@@ -16,7 +16,7 @@ namespace DialDesk.Server.Models
         public SaleItem SaleItem { get; set; }
 
         [Required]
-        public string WatchId { get; set; }
+        public Guid WatchId { get; set; }
 
         [ForeignKey("WatchId")]
         public Watch Watch { get; set; }

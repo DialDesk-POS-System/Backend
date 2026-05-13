@@ -27,7 +27,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<WatchOutDto>> GetById(string id)
+        public async Task<ActionResult<WatchOutDto>> GetById(Guid id)
         {
             var watch = await _watchService.GetWatchByIdAsync(id);
             if (watch == null) return NotFound();
@@ -79,7 +79,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<WatchOutDto>> Update(string id, [FromBody] WatchUpdateDto dto)
+        public async Task<ActionResult<WatchOutDto>> Update(Guid id, [FromBody] WatchUpdateDto dto)
         {
             var updated = await _watchService.UpdateWatchAsync(id, dto);
             if (updated == null) return NotFound();
@@ -87,7 +87,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var result = await _watchService.DeleteWatchAsync(id);
             if (!result) return NotFound();

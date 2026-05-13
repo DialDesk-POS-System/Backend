@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DialDesk.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260428133100_InitialCreate2")]
-    partial class InitialCreate2
+    [Migration("20260513085537_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,9 +92,8 @@ namespace DialDesk.Server.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<string>("WatchId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("WatchId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -127,9 +126,6 @@ namespace DialDesk.Server.Migrations
                     b.Property<string>("ModelNo")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("WarrantyPeriod")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -182,7 +178,7 @@ namespace DialDesk.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("NewSaleItemId")
+                    b.Property<int?>("NewSaleItemId")
                         .HasColumnType("integer");
 
                     b.Property<int>("OriginalSaleItemId")
@@ -281,9 +277,8 @@ namespace DialDesk.Server.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("WatchId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("WatchId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -337,7 +332,6 @@ namespace DialDesk.Server.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("ClaimDate")
-                        .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("EndDate")
@@ -349,9 +343,8 @@ namespace DialDesk.Server.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("WatchId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("WatchId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -366,8 +359,9 @@ namespace DialDesk.Server.Migrations
 
             modelBuilder.Entity("DialDesk.Server.Models.Watch", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Color")
                         .HasColumnType("text");
@@ -439,7 +433,7 @@ namespace DialDesk.Server.Migrations
             modelBuilder.Entity("DialDesk.Server.Models.ModelPriceHistory", b =>
                 {
                     b.HasOne("DialDesk.Server.Models.Model", "Model")
-                        .WithMany()
+                        .WithMany("PriceHistoryRecords")
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -451,9 +445,7 @@ namespace DialDesk.Server.Migrations
                 {
                     b.HasOne("DialDesk.Server.Models.SaleItem", "NewSaleItem")
                         .WithOne("ReturnAsNew")
-                        .HasForeignKey("DialDesk.Server.Models.Return", "NewSaleItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DialDesk.Server.Models.Return", "NewSaleItemId");
 
                     b.HasOne("DialDesk.Server.Models.SaleItem", "OriginalSaleItem")
                         .WithOne("ReturnAsOriginal")
@@ -535,6 +527,8 @@ namespace DialDesk.Server.Migrations
 
             modelBuilder.Entity("DialDesk.Server.Models.Model", b =>
                 {
+                    b.Navigation("PriceHistoryRecords");
+
                     b.Navigation("Watches");
                 });
 

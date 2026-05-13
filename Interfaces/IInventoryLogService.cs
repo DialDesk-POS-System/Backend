@@ -7,7 +7,7 @@ namespace DialDesk.Server.Interfaces
         Task<InventoryLog> CreateLogAsync(InventoryLog log);
         Task<InventoryLog?> GetByIdAsync(int id);
         Task<List<InventoryLog>> GetAllAsync();
-        Task<List<InventoryLog>> GetByWatchIdAsync(string watchId);
+        Task<List<InventoryLog>> GetByWatchIdAsync(Guid watchId);
         Task<List<InventoryLog>> GetByChangeTypeAsync(ChangeType changeType);
         Task<bool> DeleteAsync(int id);
     }

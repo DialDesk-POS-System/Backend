@@ -5,7 +5,7 @@ namespace DialDesk.Server.DTOs.Watch
 {
     public class WatchOutDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public int ModelId { get; set; }
 
         [Required]

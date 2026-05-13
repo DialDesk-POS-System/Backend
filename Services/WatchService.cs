@@ -33,7 +33,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Watch?> GetWatchByIdAsync(string id)
+        public async Task<Watch?> GetWatchByIdAsync(Guid id)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Watch?> UpdateWatchAsync(string id, WatchUpdateDto watch)
+        public async Task<Watch?> UpdateWatchAsync(Guid id, WatchUpdateDto watch)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<bool> DeleteWatchAsync(string id)
+        public async Task<bool> DeleteWatchAsync(Guid id)
         {
             try
             {

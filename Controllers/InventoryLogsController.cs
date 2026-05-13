@@ -67,7 +67,7 @@ namespace DialDesk.Server.Controllers
             }
 
         [HttpGet("watch/{watchId}")]
-        public async Task<IActionResult> GetByWatchIdAsync(string watchId)
+        public async Task<IActionResult> GetByWatchIdAsync(Guid watchId)
             {
                 try
                 {

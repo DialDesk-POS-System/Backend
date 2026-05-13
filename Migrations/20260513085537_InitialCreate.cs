@@ -92,7 +92,6 @@ namespace DialDesk.Server.Migrations
                     Category = table.Column<int>(type: "integer", nullable: false),
                     BrandId = table.Column<int>(type: "integer", nullable: false),
                     ModelName = table.Column<string>(type: "text", nullable: false),
-                    WarrantyPeriod = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -135,7 +134,7 @@ namespace DialDesk.Server.Migrations
                 name: "Watches",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ModelId = table.Column<int>(type: "integer", nullable: false),
                     ImportId = table.Column<int>(type: "integer", nullable: false),
                     SerialNo = table.Column<string>(type: "text", nullable: true),
@@ -172,7 +171,7 @@ namespace DialDesk.Server.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WatchId = table.Column<string>(type: "text", nullable: false),
+                    WatchId = table.Column<Guid>(type: "uuid", nullable: false),
                     ChangeType = table.Column<int>(type: "integer", nullable: false),
                     Notes = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -195,7 +194,7 @@ namespace DialDesk.Server.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SaleId = table.Column<int>(type: "integer", nullable: false),
-                    WatchId = table.Column<string>(type: "text", nullable: false),
+                    WatchId = table.Column<Guid>(type: "uuid", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     CostPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     DiscountAmount = table.Column<decimal>(type: "numeric", nullable: false),
@@ -226,7 +225,7 @@ namespace DialDesk.Server.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OriginalSaleItemId = table.Column<int>(type: "integer", nullable: false),
-                    NewSaleItemId = table.Column<int>(type: "integer", nullable: false),
+                    NewSaleItemId = table.Column<int>(type: "integer", nullable: true),
                     RefundAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -237,8 +236,7 @@ namespace DialDesk.Server.Migrations
                         name: "FK_Returns_SaleItems_NewSaleItemId",
                         column: x => x.NewSaleItemId,
                         principalTable: "SaleItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Returns_SaleItems_OriginalSaleItemId",
                         column: x => x.OriginalSaleItemId,
@@ -254,10 +252,10 @@ namespace DialDesk.Server.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SaleItemId = table.Column<int>(type: "integer", nullable: false),
-                    WatchId = table.Column<string>(type: "text", nullable: false),
+                    WatchId = table.Column<Guid>(type: "uuid", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ClaimDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ClaimDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {

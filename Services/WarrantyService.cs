@@ -69,7 +69,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Warranty?> GetByWatchIdAsync(string watchId)
+        public async Task<Warranty?> GetByWatchIdAsync(Guid watchId)
         {
             try
             {
