@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using DialDesk.Server.Data;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Services;
@@ -18,8 +19,31 @@ builder.Services.AddScoped<IModelService, ModelService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:3000", 
+            "http://localhost:5173", 
+            "http://localhost:4200",
+            "http://localhost:5174",
+            "http://localhost:8080"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
+});
+
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters
+            .Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -49,6 +73,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
 

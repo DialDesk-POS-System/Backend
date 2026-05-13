@@ -5,14 +5,19 @@ namespace DialDesk.Server.DTOs.Watch
 {
     public class WatchOutDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public int ModelId { get; set; }
 
         [Required]
         public string ModelName { get; set; }
 
         [Required]
+        public string ModelNo { get; set; }
+
+        [Required]
         public string BrandName{ get; set; }
+
+        public Category Category {get; set;}
         public string? SerialNo { get; set; }
         public string? Color { get; set; }
         public string? StrapMaterial { get; set; }

@@ -89,9 +89,8 @@ namespace DialDesk.Server.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<string>("WatchId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("WatchId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -275,9 +274,8 @@ namespace DialDesk.Server.Migrations
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("WatchId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("WatchId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -342,9 +340,8 @@ namespace DialDesk.Server.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("WatchId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("WatchId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -359,8 +356,9 @@ namespace DialDesk.Server.Migrations
 
             modelBuilder.Entity("DialDesk.Server.Models.Watch", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Color")
                         .HasColumnType("text");

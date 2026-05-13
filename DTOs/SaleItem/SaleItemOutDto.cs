@@ -8,7 +8,7 @@ namespace DialDesk.Server.DTOs
 
         public int SaleId { get; set; }
 
-        public string WatchId { get; set; }
+        public Guid WatchId { get; set; }
 
         public decimal UnitPrice { get; set; }
 

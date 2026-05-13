@@ -83,7 +83,7 @@ namespace DialDesk.Server.Services
 
         }
 
-        public async Task<List<InventoryLog>> GetByWatchIdAsync(string watchId)
+        public async Task<List<InventoryLog>> GetByWatchIdAsync(Guid watchId)
         {
             try
             {
