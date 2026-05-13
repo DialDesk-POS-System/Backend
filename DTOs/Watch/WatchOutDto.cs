@@ -12,6 +12,9 @@ namespace DialDesk.Server.DTOs.Watch
         public string ModelName { get; set; }
 
         [Required]
+        public string ModelNo { get; set; }
+
+        [Required]
         public string BrandName{ get; set; }
 
         public Category Category {get; set;}

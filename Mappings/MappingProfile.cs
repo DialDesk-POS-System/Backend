@@ -29,7 +29,8 @@ namespace DialDesk.Server.Mappings
                         src.Model != null && src.Model.Brand != null
                             ? src.Model.Brand.Name
                             : null))
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Model.Category));
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Model.Category))
+                .ForMember(dest => dest.ModelNo, opt => opt.MapFrom(src => src.Model.ModelNo));
             CreateMap<WatchCreateDto, Watch>();
             CreateMap<WatchUpdateDto, Watch>();
 

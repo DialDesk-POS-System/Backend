@@ -11,6 +11,11 @@ namespace DialDesk.Server.Services
         private readonly AppDbContext _context;
         private readonly ILogger<WatchService> _logger;
 
+        private IQueryable<Watch> WatchesWithDetailsQuery => _context.Watches
+            .Include(w => w.Model)
+            .ThenInclude(m => m.Brand)
+            .Include(w => w.Warranty);
+
         public WatchService(AppDbContext context, ILogger<WatchService> logger)
         {
             _context = context;
@@ -21,10 +26,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
-                    .ToListAsync();
+                return await WatchesWithDetailsQuery.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -37,10 +39,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
-                    .FirstOrDefaultAsync(w => w.Id == id);
+                return await WatchesWithDetailsQuery.FirstOrDefaultAsync(w => w.Id == id);
             }
             catch (Exception ex)
             {
@@ -53,10 +52,8 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
+                return await WatchesWithDetailsQuery
                     .Where(w => w.ModelId == modelId)
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -70,10 +67,9 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
-                .Include(w => w.Model)
-                .Where(w => w.Model.BrandId == brandId)
-                .ToListAsync();
+                return await WatchesWithDetailsQuery
+                    .Where(w => w.Model.BrandId == brandId)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -86,9 +82,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
+                return await WatchesWithDetailsQuery
                     .FirstOrDefaultAsync(w => w.SerialNo == serialNumber);
             }
             catch (Exception ex)
@@ -107,7 +101,7 @@ namespace DialDesk.Server.Services
                 watch.Status = Status.Available;
                 _context.Watches.Add(watch);
                 await _context.SaveChangesAsync();
-                return watch;
+                return await WatchesWithDetailsQuery.FirstOrDefaultAsync(w => w.Id == watch.Id);
             }
             catch (Exception ex)
             {
@@ -129,7 +123,7 @@ namespace DialDesk.Server.Services
 
                 _context.Entry(existingWatch).CurrentValues.SetValues(watch);
                 await _context.SaveChangesAsync();
-                return existingWatch;
+                return await WatchesWithDetailsQuery.FirstOrDefaultAsync(w => w.Id == id);
             }
             catch (Exception ex)
             {
@@ -164,10 +158,8 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
+                return await WatchesWithDetailsQuery
                     .Where(w => w.CostPrice >= minCostPrice && w.CostPrice <= maxCostPrice)
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -181,10 +173,8 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
+                return await WatchesWithDetailsQuery
                     .Where(w => w.SellingPrice >= minSellingPrice && w.SellingPrice <= maxSellingPrice)
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -198,10 +188,8 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Watches
+                return await WatchesWithDetailsQuery
                     .Where(w => w.Status == status)
-                    .Include(w => w.Model)
-                    .Include(w => w.Warranty)
                     .ToListAsync();
             }
             catch (Exception ex)
