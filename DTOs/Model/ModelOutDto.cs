@@ -16,8 +16,6 @@ namespace DialDesk.Server.DTOs.Model
 
         public string ModelName { get; set; }
 
-        public decimal BasePrice { get; set; }
-
         public string? Description { get; set; }
 
         public string ImageryUrl { get; set; }

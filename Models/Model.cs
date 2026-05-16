@@ -21,9 +21,6 @@ namespace DialDesk.Server.Models
         [Required]
         public string ModelName { get; set; }
 
-        [Required]
-        public decimal BasePrice { get; set; }
-
         public string? Description { get; set; }
 
         public string ImageryUrl {  get; set; }

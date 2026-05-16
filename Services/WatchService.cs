@@ -99,6 +99,10 @@ namespace DialDesk.Server.Services
                 watch.RecievedAt = DateTime.UtcNow;
                 watch.UpdatedAt = DateTime.UtcNow;
                 watch.Status = Status.Available;
+                if (string.IsNullOrWhiteSpace(watch.ImageryUrl))
+                {
+                    watch.ImageryUrl = (await _context.Models.FindAsync(watch.ModelId))?.ImageryUrl;
+                }
                 _context.Watches.Add(watch);
                 await _context.SaveChangesAsync();
                 return await WatchesWithDetailsQuery.FirstOrDefaultAsync(w => w.Id == watch.Id);
