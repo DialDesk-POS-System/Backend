@@ -11,6 +11,9 @@ namespace DialDesk.Server.Services
         private readonly AppDbContext _context;
         private readonly ILogger<ModelPriceHistroyService> _logger;
 
+        private IQueryable<ModelPriceHistory> ModelPriceHistoryWithDetail => _context.ModelPriceHistories
+            .Include(mph => mph.Model);
+
         public ModelPriceHistroyService(AppDbContext context, ILogger<ModelPriceHistroyService> logger)
         {
             _context = context;
@@ -21,9 +24,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.ModelPriceHistories
-                    .Include(mph => mph.Model)
-                    .ToListAsync();
+                return await ModelPriceHistoryWithDetail.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -36,9 +37,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.ModelPriceHistories
-                    .Include(mph => mph.Model)
-                    .FirstOrDefaultAsync(mph => mph.Id == id);
+                return await ModelPriceHistoryWithDetail.FirstOrDefaultAsync(mph => mph.Id == id);
             }
             catch (Exception ex)
             {
@@ -51,14 +50,13 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.ModelPriceHistories
+                return await ModelPriceHistoryWithDetail
                     .Where(mph => mph.ModelId == modelId)
-                    .Include(mph => mph.Model)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error fetching model price history records by model id: {modelId}");
+                _logger.LogError(ex, "Error fetching model price history records by model id: {ModelId}", modelId);
                 throw;
             }
         }
@@ -94,7 +92,7 @@ namespace DialDesk.Server.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error updating model price history record");
+                _logger.LogError(ex, "Error updating model price history record");
                 throw;
             }
         }
@@ -114,7 +112,7 @@ namespace DialDesk.Server.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error deleting model price history record with id: {id}");
+                _logger.LogError(ex, "Error deleting model price history record with id: {Id}", id);
                 throw;
             }
         }
@@ -123,9 +121,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                var query = _context.ModelPriceHistories
-                    .Include(mph => mph.Model)
-                    .AsQueryable();
+                var query = ModelPriceHistoryWithDetail.AsQueryable();
 
                 if (!string.IsNullOrEmpty(filter.ModelName))
                     query = query.Where(mph => mph.Model.ModelName != null && mph.Model.ModelName.Contains(filter.ModelName));

@@ -17,5 +17,6 @@ namespace DialDesk.Server.Interfaces
         Task<List<Watch>> GetWatchesBetweenCostPriceAsync(decimal minCostPrice, decimal maxCostPrice);
         Task<List<Watch>> GetWatchesBetweenSellingPriceAsync(decimal minSellingPrice, decimal maxSellingPrice);
         Task<List<Watch>> GetWatchesByStatusAsync(Status status);
+        Task<List<Watch>> SearchWatchesAsync(WatchSearchDto filter);
     }
 }
