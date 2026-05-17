@@ -1,5 +1,5 @@
-using DialDesk.Server.Models;
 using System.ComponentModel.DataAnnotations;
+using DialDesk.Server.Models;
 
 namespace DialDesk.Server.DTOs.Model
 {
@@ -16,6 +16,13 @@ namespace DialDesk.Server.DTOs.Model
 
         [Required]
         public string ModelName { get; set; }
+
+        [Required]
+        public decimal BasePrice { get; set; }
+
+        public string? Description { get; set; }
+
+        public string ImageryUrl { get; set; }
 
         public bool IsActive { get; set; }
     }

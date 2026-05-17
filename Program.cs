@@ -16,6 +16,7 @@ builder.Services.AddScoped<ISaleItemService, SaleItemService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IModelPriceHistoryService, ModelPriceHistroyService>();
 builder.Services.AddScoped<IModelService, ModelService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -69,8 +70,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

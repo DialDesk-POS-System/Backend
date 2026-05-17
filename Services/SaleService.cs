@@ -12,6 +12,10 @@ namespace DialDesk.Server.Services
         private readonly AppDbContext _context;
         private readonly ILogger<SaleService> _logger;
 
+        private IQueryable<Sale> SalewithDetailQuery => _context.Sales
+            .Include(s => s.PaymentMethod)
+            .Include(s => s.SaleItems);
+
         public SaleService(AppDbContext context, ILogger<SaleService> logger)
         {
             _context = context;
@@ -22,10 +26,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Sales
-                    .Include(s => s.PaymentMethod)
-                    .Include(s => s.SaleItems)
-                    .ToListAsync();
+                return await SalewithDetailQuery.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -38,10 +39,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Sales
-                     .Include(s => s.PaymentMethod)
-                     .Include(s => s.SaleItems)
-                     .FirstOrDefaultAsync(s => s.Id == id);
+                return await SalewithDetailQuery.FirstOrDefaultAsync(s => s.Id == id);
             }
             catch (Exception ex)
             {
@@ -54,10 +52,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Sales
-                    .Include(s => s.PaymentMethod)
-                    .Include(s => s.SaleItems)
-                    .FirstOrDefaultAsync(s => s.InvoiceNo == invoiceNo);
+                return await SalewithDetailQuery.FirstOrDefaultAsync(s => s.InvoiceNo == invoiceNo);
             }
             catch (Exception ex)
             {
@@ -125,51 +120,62 @@ namespace DialDesk.Server.Services
 
         public async Task<List<Sale>> SearchSalesAsync(SaleSearchDto filter)
         {
-            var query = _context.Sales
-                .Include(s => s.PaymentMethod)
-                .Include(s => s.SaleItems)
-                .AsQueryable();
+            try
+            {
+                var query = SalewithDetailQuery.AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(filter.InvoiceNo))
-                query = query.Where(s => s.InvoiceNo.Contains(filter.InvoiceNo));
-            
-            if (filter.SaleDateFrom.HasValue)
-                query = query.Where(s => s.SaleDate >= filter.SaleDateFrom.Value);
+                if (!string.IsNullOrWhiteSpace(filter.InvoiceNo))
+                    query = query.Where(s => s.InvoiceNo.Contains(filter.InvoiceNo));
 
-            if (filter.SaleDateTo.HasValue)
-                query = query.Where(s => s.SaleDate <= filter.SaleDateTo.Value);
+                if (filter.SaleDateFrom.HasValue)
+                    query = query.Where(s => s.SaleDate >= filter.SaleDateFrom.Value);
 
-            if (filter.SubTotal.HasValue)
-                query = query.Where(s => s.SubTotal == filter.SubTotal.Value);
+                if (filter.SaleDateTo.HasValue)
+                    query = query.Where(s => s.SaleDate <= filter.SaleDateTo.Value);
 
-            if (filter.DiscountAmount.HasValue)
-                query = query.Where(s => s.DiscountAmount == filter.DiscountAmount.Value);
+                if (filter.SubTotal.HasValue)
+                    query = query.Where(s => s.SubTotal == filter.SubTotal.Value);
 
-            if (filter.TaxAmount.HasValue)
-                query = query.Where(s => s.TaxAmount == filter.TaxAmount.Value);
+                if (filter.DiscountAmount.HasValue)
+                    query = query.Where(s => s.DiscountAmount == filter.DiscountAmount.Value);
 
-            if (filter.TotalAmount.HasValue)
-                query = query.Where(s => s.TotalAmount == filter.TotalAmount.Value);
-            
-            if (filter.PaymentMethod.HasValue)
-                query = query.Where(s => s.PaymentMethod == filter.PaymentMethod.Value);
+                if (filter.TaxAmount.HasValue)
+                    query = query.Where(s => s.TaxAmount == filter.TaxAmount.Value);
 
-            if (!string.IsNullOrWhiteSpace(filter.CustomerName))
-                query = query.Where(s => s.CustomerName != null && s.CustomerName.Contains(filter.CustomerName));
+                if (filter.TotalAmount.HasValue)
+                    query = query.Where(s => s.TotalAmount == filter.TotalAmount.Value);
 
-            if (!string.IsNullOrWhiteSpace(filter.CustomerEmail))
-                query = query.Where(s => s.CustomerEmail != null &&
-                                         s.CustomerEmail.Contains(filter.CustomerEmail));
+                if (filter.PaymentMethod.HasValue)
+                    query = query.Where(s => s.PaymentMethod == filter.PaymentMethod.Value);
 
-            if (!string.IsNullOrWhiteSpace(filter.CustomerPhone))
-                query = query.Where(s => s.CustomerPhone != null &&
-                                         s.CustomerPhone.Contains(filter.CustomerPhone));
+                if (!string.IsNullOrWhiteSpace(filter.CustomerName))
+                {
+                    query = query.Where(s => s.CustomerName != null && s.CustomerName.Contains(filter.CustomerName));
+                }
 
-            if (!string.IsNullOrWhiteSpace(filter.Notes))
-                query = query.Where(s => s.Notes != null &&
-                                         s.Notes.Contains(filter.Notes));
+                if (!string.IsNullOrWhiteSpace(filter.CustomerEmail))
+                {
+                    query = query.Where(s => s.CustomerEmail != null && s.CustomerEmail.Contains(filter.CustomerEmail));
+                }
 
-            return await query.ToListAsync();
+                if (!string.IsNullOrWhiteSpace(filter.CustomerPhone))
+                {
+                    query = query.Where(s => s.CustomerPhone != null && s.CustomerPhone.Contains(filter.CustomerPhone));
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter.Notes))
+                {
+                    query = query.Where(s => s.Notes != null && s.Notes.Contains(filter.Notes));
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching watches");
+                throw;
+            }
+
         }
     }
 }

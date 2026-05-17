@@ -1,4 +1,4 @@
-﻿using DialDesk.Server.Data;
+using DialDesk.Server.Data;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
@@ -99,6 +99,10 @@ namespace DialDesk.Server.Services
                 watch.RecievedAt = DateTime.UtcNow;
                 watch.UpdatedAt = DateTime.UtcNow;
                 watch.Status = Status.Available;
+                if (string.IsNullOrWhiteSpace(watch.ImageryUrl))
+                {
+                    watch.ImageryUrl = (await _context.Models.FindAsync(watch.ModelId))?.ImageryUrl;
+                }
                 _context.Watches.Add(watch);
                 await _context.SaveChangesAsync();
                 return await WatchesWithDetailsQuery.FirstOrDefaultAsync(w => w.Id == watch.Id);
@@ -195,6 +199,55 @@ namespace DialDesk.Server.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching watches by status");
+                throw;
+            }
+        }
+
+        public async Task<List<Watch>> SearchWatchesAsync(WatchSearchDto filter)
+        {
+            try
+            {
+                var query = WatchesWithDetailsQuery.AsQueryable();
+
+                if (!string.IsNullOrEmpty(filter.ModelName))
+                {
+                    query = query.Where(w => w.Model.ModelName.Contains(filter.ModelName));
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter.ModelNo))
+                {
+                    query = query.Where(w => w.Model.ModelNo.Contains(filter.ModelNo));
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter.BrandName))
+                {
+                    query = query.Where(w => w.Model.Brand.Name.Contains(filter.BrandName));
+                }
+
+                if (filter.Category.HasValue)
+                {
+                    query = query.Where(w => w.Model.Category == filter.Category.Value);
+                }
+
+                if (!string.IsNullOrWhiteSpace(filter.SerialNo))
+                {
+                    query = query.Where(w => w.SerialNo.Contains(filter.SerialNo));
+                }
+
+                if (!string.IsNullOrEmpty(filter.Color))
+                {
+                    query = query.Where(w => w.Color == filter.Color);
+                }
+                if (!string.IsNullOrEmpty(filter.StrapMaterial))
+                {
+                    query = query.Where(w => w.StrapMaterial == filter.StrapMaterial);
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching watches");
                 throw;
             }
         }

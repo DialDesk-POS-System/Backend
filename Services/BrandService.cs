@@ -11,6 +11,9 @@ namespace DialDesk.Server.Services
         private readonly AppDbContext _context;
         private readonly ILogger<BrandService> _logger;
 
+        private IQueryable<Brand> BrandWithDetail => _context.Brands
+            .Include(b => b.Models);
+
         public BrandService(AppDbContext context, ILogger<BrandService> logger)
         {
             _context = context;
@@ -21,9 +24,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Brands
-                    .Include(b => b.Models)
-                    .ToListAsync();
+                return await BrandWithDetail.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -36,9 +37,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Brands
-                    .Include(b => b.Models)
-                    .FirstOrDefaultAsync(b => b.Id == id);
+                return await BrandWithDetail.FirstOrDefaultAsync(b => b.Id == id);
             }
             catch (Exception ex)
             {
@@ -51,8 +50,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Brands
-                    .Include(b => b.Models)
+                return await BrandWithDetail
                     .Where(b => b.Name.Contains(name))
                     .ToListAsync();
             }
@@ -67,8 +65,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Brands
-                    .Include(b => b.Models)
+                return await BrandWithDetail
                     .Where(b => b.IsActive)
                     .ToListAsync();
             }

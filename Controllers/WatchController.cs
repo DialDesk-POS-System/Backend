@@ -93,5 +93,12 @@ namespace DialDesk.Server.Controllers
             if (!result) return NotFound();
             return NoContent();
         }
+
+        [HttpGet("search")]
+        public async Task<ActionResult<List<WatchOutDto>>> Search([FromQuery] WatchSearchDto filter)
+        {
+            var watches = await _watchService.SearchWatchesAsync(filter);
+            return Ok(_mapper.Map<List<WatchOutDto>>(watches));
+        }
     }
 }
