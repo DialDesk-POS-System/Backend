@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DialDesk.Server.Models
 {
+    [Index(nameof(SerialNo), IsUnique = true)]
     public class Watch
     {
         [Key]

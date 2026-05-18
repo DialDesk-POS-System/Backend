@@ -10,7 +10,7 @@ namespace DialDesk.Server.Interfaces
         Task<List<Brand>> GetBrandByNameAsync(string name);
         Task<List<Brand>> GetBrandsActiveAsync();
         Task<Brand?> CreateBrandAsync(Brand brand);
-        Task<Brand?> UpdateBrandAsync(int id, BrandInDto brand);
+        Task<Brand?> UpdateBrandAsync(int id, BrandUpdateDto brand);
         Task<bool> DeleteBrandAsync(int id);
     }
 }

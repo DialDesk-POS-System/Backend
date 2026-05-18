@@ -1,5 +1,6 @@
-﻿using DialDesk.Server.Data;
+using DialDesk.Server.Data;
 using DialDesk.Server.DTOs;
+using DialDesk.Server.DTOs.ModelPriceRecord;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,9 @@ namespace DialDesk.Server.Services
         private readonly AppDbContext _context;
         private readonly ILogger<ModelPriceHistroyService> _logger;
 
+        private IQueryable<ModelPriceHistory> ModelPriceHistoryWithDetail => _context.ModelPriceHistories
+            .Include(mph => mph.Model);
+
         public ModelPriceHistroyService(AppDbContext context, ILogger<ModelPriceHistroyService> logger)
         {
             _context = context;
@@ -21,9 +25,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.ModelPriceHistories
-                    .Include(mph => mph.Model)
-                    .ToListAsync();
+                return await ModelPriceHistoryWithDetail.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -36,9 +38,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.ModelPriceHistories
-                    .Include(mph => mph.Model)
-                    .FirstOrDefaultAsync(mph => mph.Id == id);
+                return await ModelPriceHistoryWithDetail.FirstOrDefaultAsync(mph => mph.Id == id);
             }
             catch (Exception ex)
             {
@@ -51,14 +51,13 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.ModelPriceHistories
+                return await ModelPriceHistoryWithDetail
                     .Where(mph => mph.ModelId == modelId)
-                    .Include(mph => mph.Model)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error fetching model price history records by model id: {modelId}");
+                _logger.LogError(ex, "Error fetching model price history records by model id: {ModelId}", modelId);
                 throw;
             }
         }
@@ -79,7 +78,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryDto record)
+        public async Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryUpdateDto record)
         {
             try
             {
@@ -88,13 +87,19 @@ namespace DialDesk.Server.Services
                 {
                     return null;
                 }
-                _context.Entry(existingRecord).CurrentValues.SetValues(record);
+                if (record.PurchasePrice.HasValue) existingRecord.PurchasePrice = record.PurchasePrice.Value;
+                if (record.ModelId.HasValue) existingRecord.ModelId = record.ModelId.Value;
+                if (record.SellingPrice.HasValue) existingRecord.SellingPrice = record.SellingPrice.Value;
+                if (record.EffectiveFrom.HasValue) existingRecord.EffectiveFrom = record.EffectiveFrom.Value;
+                if (record.EffectiveTo.HasValue) existingRecord.EffectiveTo = record.EffectiveTo.Value;
+                if (record.Notes != null) existingRecord.Notes = record.Notes;
+
                 await _context.SaveChangesAsync();
                 return existingRecord;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error updating model price history record");
+                _logger.LogError(ex, "Error updating model price history record");
                 throw;
             }
         }
@@ -114,7 +119,7 @@ namespace DialDesk.Server.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error deleting model price history record with id: {id}");
+                _logger.LogError(ex, "Error deleting model price history record with id: {Id}", id);
                 throw;
             }
         }
@@ -123,9 +128,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                var query = _context.ModelPriceHistories
-                    .Include(mph => mph.Model)
-                    .AsQueryable();
+                var query = ModelPriceHistoryWithDetail.AsQueryable();
 
                 if (!string.IsNullOrEmpty(filter.ModelName))
                     query = query.Where(mph => mph.Model.ModelName != null && mph.Model.ModelName.Contains(filter.ModelName));

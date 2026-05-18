@@ -49,7 +49,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BrandOutDto>> Create([FromBody] BrandInDto dto)
+        public async Task<ActionResult<BrandOutDto>> Create([FromBody] BrandCreateDto dto)
         {
             var brand = _mapper.Map<Brand>(dto);
             var created = await _brandService.CreateBrandAsync(brand);
@@ -57,7 +57,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<BrandOutDto>> Update(int id, [FromBody] BrandInDto dto)
+        public async Task<ActionResult<BrandOutDto>> Update(int id, [FromBody] BrandUpdateDto dto)
         {
             var updated = await _brandService.UpdateBrandAsync(id, dto);
             if (updated == null) return NotFound();

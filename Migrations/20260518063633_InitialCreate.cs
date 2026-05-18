@@ -92,6 +92,9 @@ namespace DialDesk.Server.Migrations
                     Category = table.Column<int>(type: "integer", nullable: false),
                     BrandId = table.Column<int>(type: "integer", nullable: false),
                     ModelName = table.Column<string>(type: "text", nullable: false),
+                    LowStockThreshold = table.Column<int>(type: "integer", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    ImageryUrl = table.Column<string>(type: "text", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>

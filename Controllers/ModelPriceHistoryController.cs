@@ -1,5 +1,6 @@
 using AutoMapper;
 using DialDesk.Server.DTOs;
+using DialDesk.Server.DTOs.ModelPriceRecord;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace DialDesk.Server.Controllers
         public async Task<ActionResult<List<ModelPriceHistory>>> GetAll()
         {
             var records = await _priceHistoryService.GetAllRecordsAsync();
-            return Ok(_mapper.Map<List<ModelHistoryDto>>(records));
+            return Ok(_mapper.Map<List<ModelHistoryCreateDto>>(records));
         }
 
         [HttpGet("{id:int}")]
@@ -49,7 +50,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ModelPriceHistory>> Create([FromBody] ModelHistoryDto dto)
+        public async Task<ActionResult<ModelPriceHistory>> Create([FromBody] ModelHistoryCreateDto dto)
         {
             var record = _mapper.Map<ModelPriceHistory>(dto);
             var created = await _priceHistoryService.CreateRecordAsync(record);
@@ -57,7 +58,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<ModelPriceHistory>> Update(int id, [FromBody] ModelHistoryDto dto)
+        public async Task<ActionResult<ModelPriceHistory>> Update(int id, [FromBody] ModelHistoryUpdateDto dto)
         {
             var updated = await _priceHistoryService.UpdateRecordAsync(id, dto);
             if (updated == null) return NotFound();

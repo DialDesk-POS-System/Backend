@@ -16,6 +16,10 @@ namespace DialDesk.Server.DTOs.Model
 
         public string ModelName { get; set; }
 
+        public string? Description { get; set; }
+
+        public string ImageryUrl { get; set; }
+
         public bool IsActive { get; set; }
     }
 }

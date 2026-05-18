@@ -5,11 +5,9 @@ namespace DialDesk.Server.DTOs.Watch
 {
     public class WatchUpdateDto
     {
-        [Required]
-        public int ModelId { get; set; }
+        public int? ModelId { get; set; }
 
-        [Required]
-        public int ImportId { get; set; }
+        public int? ImportId { get; set; }
 
         public string? SerialNo { get; set; }
 
@@ -19,11 +17,9 @@ namespace DialDesk.Server.DTOs.Watch
 
         public int? WaterResistanceM { get; set; }
 
-        [Required]
-        public decimal CostPrice { get; set; }
+        public decimal? CostPrice { get; set; }
 
-        [Required]
-        public decimal SellingPrice { get; set; }
+        public decimal? SellingPrice { get; set; }
 
         public string? ImageryUrl { get; set; }
     }

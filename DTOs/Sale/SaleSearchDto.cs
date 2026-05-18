@@ -1,6 +1,6 @@
 ﻿using DialDesk.Server.Models;
 
-namespace DialDesk.Server.DTOs
+namespace DialDesk.Server.DTOs.Sale
 {
     public class SaleSearchDto
     {
