@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DialDesk.Server.Models
 {
@@ -32,9 +33,11 @@ namespace DialDesk.Server.Models
         [Required]
         public decimal LineTotal { get; set; }
 
+        [JsonIgnore]
         [InverseProperty("OriginalSaleItem")]
         public Return? ReturnAsOriginal { get; set; }
 
+        [JsonIgnore]
         [InverseProperty("NewSaleItem")]
         public Return? ReturnAsNew { get; set; }
 

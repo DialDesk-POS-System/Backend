@@ -5,6 +5,7 @@ using DialDesk.Server.DTOs.Model;
 using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Models;
+using DialDesk.Server.DTOs.Return;
 
 namespace DialDesk.Server.Mappings
 {
@@ -15,6 +16,8 @@ namespace DialDesk.Server.Mappings
             // Brand
             CreateMap<Brand, BrandOutDto>();
             CreateMap<BrandInDto, Brand>();
+
+            CreateMap<ReturnInDto, Return>();
 
             // Model
             CreateMap<Models.Model, ModelOutDto>()

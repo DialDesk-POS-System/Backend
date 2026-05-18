@@ -1,4 +1,6 @@
-﻿using DialDesk.Server.Interfaces;
+﻿using AutoMapper;
+using DialDesk.Server.DTOs.Return;
+using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,12 @@ namespace DialDesk.Server.Controllers
     public class ReturnController : ControllerBase
     {
         public readonly IReturnService _returnService;
+        private readonly IMapper _mapper;
 
-        public ReturnController(IReturnService returnService)
+        public ReturnController(IReturnService returnService, IMapper mapper)
         {
             _returnService = returnService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -32,12 +36,15 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReturn(Return returnRequest)
+        public async Task<IActionResult> CreateReturn([FromBody] ReturnInDto dto)
         {
             try
             {
-                var createdReturn = await _returnService.CreateReturnAsync(returnRequest);
-                return Ok(createdReturn);
+                var returnEntity = _mapper.Map<Return>(dto);
+                var created =
+                         await _returnService
+                            .CreateReturnAsync(returnEntity);
+                return Ok(created);
 
             }
             catch (Exception ex)
