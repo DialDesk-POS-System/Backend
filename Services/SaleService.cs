@@ -1,4 +1,4 @@
-﻿using DialDesk.Server.Data;
+using DialDesk.Server.Data;
 using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.Interfaces;
@@ -86,7 +86,14 @@ namespace DialDesk.Server.Services
                     _logger.LogWarning("Sale with id {Id} not found for update", id);
                     return null;
                 }
-                _context.Entry(existingSale).CurrentValues.SetValues(sale);
+                if (sale.DiscountAmount.HasValue) existingSale.DiscountAmount = sale.DiscountAmount.Value;
+                if (sale.TaxAmount.HasValue) existingSale.TaxAmount = sale.TaxAmount.Value;
+                if (sale.PaymentMethod.HasValue) existingSale.PaymentMethod = sale.PaymentMethod.Value;
+                if (sale.Notes != null) existingSale.Notes = sale.Notes;
+                if (sale.CustomerName != null) existingSale.CustomerName = sale.CustomerName;
+                if (sale.CustomerEmail != null) existingSale.CustomerEmail = sale.CustomerEmail;
+                if (sale.CustomerPhone != null) existingSale.CustomerPhone = sale.CustomerPhone;
+                
                 await _context.SaveChangesAsync();
                 return existingSale;
             }

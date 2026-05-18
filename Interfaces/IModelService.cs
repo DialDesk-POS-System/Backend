@@ -1,4 +1,4 @@
-﻿using DialDesk.Server.DTOs.Model;
+using DialDesk.Server.DTOs.Model;
 using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
@@ -11,7 +11,7 @@ namespace DialDesk.Server.Interfaces
         Task<List<Model>> GetModelsByBrandAsync(int brandId);
         Task<List<Model>> GetModelsActiveAsync();
         Task<Model?> CreateModelAsync(Model model);
-        Task<Model?> UpdateModelAsync(int id, ModelInDto model);
+        Task<Model?> UpdateModelAsync(int id, ModelUpdateDto model);
         Task<bool> DeleteModelAsync(int id);
     }
 }

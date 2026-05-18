@@ -125,7 +125,17 @@ namespace DialDesk.Server.Services
                     return null;
                 }
 
-                _context.Entry(existingWatch).CurrentValues.SetValues(watch);
+                if (watch.ModelId.HasValue) existingWatch.ModelId = watch.ModelId.Value;
+                if (watch.ImportId.HasValue) existingWatch.ImportId = watch.ImportId.Value;
+                if (watch.SerialNo != null) existingWatch.SerialNo = watch.SerialNo;
+                if (watch.Color != null) existingWatch.Color = watch.Color;
+                if (watch.StrapMaterial != null) existingWatch.StrapMaterial = watch.StrapMaterial;
+                if (watch.WaterResistanceM.HasValue) existingWatch.WaterResistanceM = watch.WaterResistanceM.Value;
+                if (watch.CostPrice.HasValue) existingWatch.CostPrice = watch.CostPrice.Value;
+                if (watch.SellingPrice.HasValue) existingWatch.SellingPrice = watch.SellingPrice.Value;
+                if (watch.ImageryUrl != null) existingWatch.ImageryUrl = watch.ImageryUrl;
+                existingWatch.UpdatedAt = DateTime.UtcNow;
+
                 await _context.SaveChangesAsync();
                 return await WatchesWithDetailsQuery.FirstOrDefaultAsync(w => w.Id == id);
             }

@@ -1,5 +1,6 @@
-﻿using DialDesk.Server.Data;
+using DialDesk.Server.Data;
 using DialDesk.Server.DTOs;
+using DialDesk.Server.DTOs.ModelPriceRecord;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -77,7 +78,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryDto record)
+        public async Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryUpdateDto record)
         {
             try
             {
@@ -86,7 +87,13 @@ namespace DialDesk.Server.Services
                 {
                     return null;
                 }
-                _context.Entry(existingRecord).CurrentValues.SetValues(record);
+                if (record.PurchasePrice.HasValue) existingRecord.PurchasePrice = record.PurchasePrice.Value;
+                if (record.ModelId.HasValue) existingRecord.ModelId = record.ModelId.Value;
+                if (record.SellingPrice.HasValue) existingRecord.SellingPrice = record.SellingPrice.Value;
+                if (record.EffectiveFrom.HasValue) existingRecord.EffectiveFrom = record.EffectiveFrom.Value;
+                if (record.EffectiveTo.HasValue) existingRecord.EffectiveTo = record.EffectiveTo.Value;
+                if (record.Notes != null) existingRecord.Notes = record.Notes;
+
                 await _context.SaveChangesAsync();
                 return existingRecord;
             }

@@ -91,7 +91,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Brand?> UpdateBrandAsync(int id, BrandInDto brand)
+        public async Task<Brand?> UpdateBrandAsync(int id, BrandUpdateDto brand)
         {
             try
             {
@@ -102,7 +102,11 @@ namespace DialDesk.Server.Services
                     return null;
                 }
 
-                _context.Entry(existingBrand).CurrentValues.SetValues(brand);
+                if (brand.Name != null) existingBrand.Name = brand.Name;
+                if (brand.ManufacturedCountry != null) existingBrand.ManufacturedCountry = brand.ManufacturedCountry;
+                if (brand.LogoUrl != null) existingBrand.LogoUrl = brand.LogoUrl;
+                if (brand.IsActive.HasValue) existingBrand.IsActive = brand.IsActive.Value;
+
                 await _context.SaveChangesAsync();
                 return existingBrand;
             }

@@ -3,7 +3,7 @@ using DialDesk.Server.Models;
 
 namespace DialDesk.Server.DTOs.Model
 {
-    public class ModelInDto
+    public class ModelCreateDto
     {
         [Required]
         public string ModelNo { get; set; }
@@ -16,6 +16,8 @@ namespace DialDesk.Server.DTOs.Model
 
         [Required]
         public string ModelName { get; set; }
+
+        public int? LowStockThreshold { get; set; }
 
         [Required]
         public decimal BasePrice { get; set; }

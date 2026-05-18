@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DialDesk.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260513085537_InitialCreate")]
+    [Migration("20260518063633_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -116,8 +116,18 @@ namespace DialDesk.Server.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageryUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
+
+                    b.Property<int?>("LowStockThreshold")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ModelName")
                         .IsRequired()

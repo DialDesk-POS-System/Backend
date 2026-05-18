@@ -9,8 +9,7 @@ namespace DialDesk.Server.DTOs.Sale
 
         public decimal? TaxAmount { get; set; }
 
-        [Required]
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; }
 
         public string? Notes { get; set; }
 

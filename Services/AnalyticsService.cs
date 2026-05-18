@@ -61,14 +61,15 @@ public class AnalyticsService : IAnalyticsService
         }
     }
 
-    public async Task<int> GetLowStockCountAsync(int threshold = 5)
+    public async Task<List<Model>> GetLowStockModels()
     {
         try
         {
             return await _context.Models
-            .CountAsync(m =>
-                m.Watches.Count(w => w.Status == Status.Available) <= threshold
-            );
+            .Where(m =>
+                m.Watches.Count(w => w.Status == Status.Available) <= m.LowStockThreshold
+            )
+            .ToListAsync();
         }
         catch (Exception ex)
         {
@@ -88,6 +89,21 @@ public class AnalyticsService : IAnalyticsService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error while getting total stock value");
+            throw;
+        }
+    }
+
+    public async Task<decimal> GetTodayRevenue(DateTime date)
+    {
+        try
+        {
+            return await _context.Sales
+            .Where(s => s.SaleDate == date)
+            .SumAsync(s => s.TotalAmount);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting today's revenue");
             throw;
         }
     }

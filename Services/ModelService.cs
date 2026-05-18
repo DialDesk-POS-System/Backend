@@ -11,6 +11,9 @@ namespace DialDesk.Server.Services
         public readonly AppDbContext _context;
         private readonly ILogger<ModelService> _logger;
 
+        private IQueryable<Model> ModelsWithDetailsQuery => _context.Models
+            .Include(m => m.Brand);
+
         public ModelService(AppDbContext context, ILogger<ModelService> logger)
         {
             _context = context;
@@ -21,7 +24,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Models
+                return await ModelsWithDetailsQuery
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -35,7 +38,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Models.FindAsync(id);
+                return await ModelsWithDetailsQuery.FirstOrDefaultAsync(m => m.Id == id);
             }
             catch (Exception ex)
             {
@@ -48,7 +51,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Models
+                return await ModelsWithDetailsQuery
                     .Where(m => m.ModelNo.Contains(modelNo))
                     .ToListAsync();
             }
@@ -63,7 +66,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Models.Where(m => m.BrandId == brandId).ToListAsync();
+                return await ModelsWithDetailsQuery.Where(m => m.BrandId == brandId).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -76,7 +79,7 @@ namespace DialDesk.Server.Services
         {
             try
             {
-                return await _context.Models.Where(m => m.IsActive).ToListAsync();
+                return await ModelsWithDetailsQuery.Where(m => m.IsActive).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -100,18 +103,28 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<Model?> UpdateModelAsync(int id, ModelInDto model)
+        public async Task<Model?> UpdateModelAsync(int id, ModelUpdateDto model)
         {
             try
             {
-                var existingModel = await _context.Models.FindAsync(id);
+                var existingModel = await _context.Models
+                    .Include(m => m.Brand)
+                    .FirstOrDefaultAsync(m => m.Id == id);
                 if (existingModel == null)
                 {
                     _logger.LogWarning("Model with id {Id} not found for update", id);
                     return null;
                 }
 
-                _context.Entry(existingModel).CurrentValues.SetValues(model);
+                if (model.ModelNo != null) existingModel.ModelNo = model.ModelNo;
+                if (model.Category.HasValue) existingModel.Category = model.Category.Value;
+                if (model.BrandId.HasValue) existingModel.BrandId = model.BrandId.Value;
+                if (model.ModelName != null) existingModel.ModelName = model.ModelName;
+                if (model.LowStockThreshold.HasValue) existingModel.LowStockThreshold = model.LowStockThreshold.Value;
+                if (model.Description != null) existingModel.Description = model.Description;
+                if (model.ImageryUrl != null) existingModel.ImageryUrl = model.ImageryUrl;
+                if (model.IsActive.HasValue) existingModel.IsActive = model.IsActive.Value;
+                
                 await _context.SaveChangesAsync();
                 return existingModel;
             }

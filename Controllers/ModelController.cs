@@ -56,7 +56,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ModelOutDto>> Create([FromBody] ModelInDto dto)
+        public async Task<ActionResult<ModelOutDto>> Create([FromBody] ModelCreateDto dto)
         {
             var model = _mapper.Map<Model>(dto);
             var created = await _modelService.CreateModelAsync(model);
@@ -64,7 +64,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<ModelOutDto>> Update(int id, [FromBody] ModelInDto dto)
+        public async Task<ActionResult<ModelOutDto>> Update(int id, [FromBody] ModelUpdateDto dto)
         {
             var updated = await _modelService.UpdateModelAsync(id, dto);
             if (updated == null) return NotFound();

@@ -1,8 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DialDesk.Server.Models
 {
+    [Index(nameof(ModelNo), IsUnique = true)]
+    [Index(nameof(ModelName), IsUnique = true)]
     public class Model
     {
         [Key]
@@ -20,6 +23,7 @@ namespace DialDesk.Server.Models
 
         [Required]
         public string ModelName { get; set; }
+        public int? LowStockThreshold { get; set; }
 
         public string? Description { get; set; }
 
