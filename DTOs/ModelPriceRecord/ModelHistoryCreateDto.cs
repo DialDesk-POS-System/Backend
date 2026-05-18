@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DialDesk.Server.DTOs
 {
-    public class ModelHistoryDto
+    public class ModelHistoryCreateDto
     {
         [Required]
         public decimal PurchasePrice { get; set; }

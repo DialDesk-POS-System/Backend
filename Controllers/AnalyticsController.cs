@@ -1,3 +1,5 @@
+using AutoMapper;
+using DialDesk.Server.DTOs.Model;
 using DialDesk.Server.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +10,13 @@ namespace DialDesk.Server.Controllers;
 public class AnalyticsController : ControllerBase
 {
     private readonly IAnalyticsService _analyticsService;
+    private readonly IMapper _mapper;
     private readonly ILogger<AnalyticsController> _logger;
 
-    public AnalyticsController(IAnalyticsService analyticsService, ILogger<AnalyticsController> logger)
+    public AnalyticsController(IAnalyticsService analyticsService, IMapper mapper, ILogger<AnalyticsController> logger)
     {
         _analyticsService = analyticsService;
+        _mapper = mapper;
         _logger = logger;
     }
 
@@ -44,17 +48,18 @@ public class AnalyticsController : ControllerBase
         }
     }
 
-    [HttpGet("low-stock-count")]
-    public async Task<ActionResult<int>> GetLowStockCount([FromQuery] int threshold = 5)
+    [HttpGet("low-stock-models")]
+    public async Task<ActionResult<List<ModelOutDto>>> GetLowStockModels()
     {
         try
         {
-            return await _analyticsService.GetLowStockCountAsync(threshold);
+            var models = await _analyticsService.GetLowStockModels();
+            return Ok(_mapper.Map<List<ModelOutDto>>(models));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error fetching low stock count");
-            return StatusCode(500, "Error fetching low stock count");
+            _logger.LogError(ex, "Error fetching low stock models");
+            return StatusCode(500, "Error fetching low stock models");
         }
     }
 
@@ -69,6 +74,20 @@ public class AnalyticsController : ControllerBase
         {
             _logger.LogError(ex, "Error fetching total stock value");
             return StatusCode(500, "Error fetching total stock value");
+        }
+    }
+
+    [HttpGet("today-revenue")]
+    public async Task<ActionResult<decimal>> GetTodayRevenue([FromQuery] DateTime date)
+    {
+        try
+        {
+            return await _analyticsService.GetTodayRevenue(date);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching today's revenue");
+            return StatusCode(500, "Error fetching today's revenue");
         }
     }
 }

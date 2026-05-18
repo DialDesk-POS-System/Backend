@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DialDesk.Server.DTOs.Brand
 {
-    public class BrandInDto
+    public class BrandCreateDto
     {
         [Required]
         public string Name { get; set; }

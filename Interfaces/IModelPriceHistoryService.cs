@@ -1,4 +1,5 @@
 ﻿using DialDesk.Server.DTOs;
+using DialDesk.Server.DTOs.ModelPriceRecord;
 using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
@@ -9,7 +10,7 @@ namespace DialDesk.Server.Interfaces
         Task<ModelPriceHistory?> GetRecordByIdAsync(int id);
         Task<List<ModelPriceHistory>> GetRecordsByModelAsync(int modelId);
         Task<ModelPriceHistory?> CreateRecordAsync(ModelPriceHistory record);
-        Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryDto record);
+        Task<ModelPriceHistory?> UpdateRecordAsync(int id, ModelHistoryUpdateDto record);
         Task<bool> DeleteRecordAsync(int id);
         Task<List<ModelPriceHistory>> SearchRecordsAsync(ModelPriceHistoryRecordSearch filter);
     }

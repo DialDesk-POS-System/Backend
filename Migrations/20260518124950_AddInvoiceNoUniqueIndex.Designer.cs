@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DialDesk.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260515162521_AddImageUrlToModel")]
-    partial class AddImageUrlToModel
+    [Migration("20260518124950_AddInvoiceNoUniqueIndex")]
+    partial class AddInvoiceNoUniqueIndex
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,12 +116,18 @@ namespace DialDesk.Server.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<string>("ImageryUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
+
+                    b.Property<int?>("LowStockThreshold")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ModelName")
                         .IsRequired()
@@ -134,6 +140,12 @@ namespace DialDesk.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("ModelName")
+                        .IsUnique();
+
+                    b.HasIndex("ModelNo")
+                        .IsUnique();
 
                     b.ToTable("Models");
                 });
@@ -251,6 +263,9 @@ namespace DialDesk.Server.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InvoiceNo")
+                        .IsUnique();
 
                     b.ToTable("Sales");
                 });
@@ -408,6 +423,9 @@ namespace DialDesk.Server.Migrations
                     b.HasIndex("ImportId");
 
                     b.HasIndex("ModelId");
+
+                    b.HasIndex("SerialNo")
+                        .IsUnique();
 
                     b.ToTable("Watches");
                 });

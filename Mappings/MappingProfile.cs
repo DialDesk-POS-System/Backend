@@ -2,6 +2,7 @@ using AutoMapper;
 using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Brand;
 using DialDesk.Server.DTOs.Model;
+using DialDesk.Server.DTOs.ModelPriceRecord;
 using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Models;
@@ -14,12 +15,14 @@ namespace DialDesk.Server.Mappings
         {
             // Brand
             CreateMap<Brand, BrandOutDto>();
-            CreateMap<BrandInDto, Brand>();
+            CreateMap<BrandCreateDto, Brand>();
+            CreateMap<BrandUpdateDto, Brand>();
 
             // Model
             CreateMap<Models.Model, ModelOutDto>()
                 .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Brand != null ? src.Brand.Name : null));
-            CreateMap<ModelInDto, Models.Model>();
+            CreateMap<ModelCreateDto, Models.Model>();
+            CreateMap<ModelUpdateDto, Models.Model>();
 
             // Watch
             CreateMap<Watch, WatchOutDto>()
@@ -44,8 +47,10 @@ namespace DialDesk.Server.Mappings
             CreateMap<SaleItemCreateDto, SaleItem>();
 
             // ModelPriceHistory
-            CreateMap<ModelPriceHistory, ModelHistoryDto>()
+            CreateMap<ModelPriceHistory, ModelHistoryCreateDto>()
                 .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.Model != null ? src.Model.ModelName : null));
+            CreateMap<ModelHistoryCreateDto, ModelPriceHistory>();
+            CreateMap<ModelHistoryUpdateDto, ModelPriceHistory>();
         }
     }
 }

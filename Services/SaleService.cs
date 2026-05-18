@@ -1,4 +1,4 @@
-﻿using DialDesk.Server.Data;
+using DialDesk.Server.Data;
 using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.Interfaces;
@@ -13,7 +13,6 @@ namespace DialDesk.Server.Services
         private readonly ILogger<SaleService> _logger;
 
         private IQueryable<Sale> SalewithDetailQuery => _context.Sales
-            .Include(s => s.PaymentMethod)
             .Include(s => s.SaleItems);
 
         public SaleService(AppDbContext context, ILogger<SaleService> logger)
@@ -65,6 +64,27 @@ namespace DialDesk.Server.Services
         {
             try
             {
+                sale.SaleDate = DateTime.UtcNow;
+
+                var currentYear = sale.SaleDate.Year;
+                var prefix = $"INV-{currentYear}-";
+
+                var lastSale = await _context.Sales
+                    .Where(s => s.InvoiceNo != null && s.InvoiceNo.StartsWith(prefix))
+                    .OrderByDescending(s => s.InvoiceNo)
+                    .FirstOrDefaultAsync();
+
+                int nextNumber = 1;
+                if (lastSale != null && lastSale.InvoiceNo.Length > prefix.Length)
+                {
+                    if (int.TryParse(lastSale.InvoiceNo.Substring(prefix.Length), out int lastNumber))
+                    {
+                        nextNumber = lastNumber + 1;
+                    }
+                }
+
+                sale.InvoiceNo = $"{prefix}{nextNumber:D5}";
+
                 _context.Sales.Add(sale);
                 await _context.SaveChangesAsync();
                 return sale;
@@ -86,7 +106,14 @@ namespace DialDesk.Server.Services
                     _logger.LogWarning("Sale with id {Id} not found for update", id);
                     return null;
                 }
-                _context.Entry(existingSale).CurrentValues.SetValues(sale);
+                if (sale.DiscountAmount.HasValue) existingSale.DiscountAmount = sale.DiscountAmount.Value;
+                if (sale.TaxAmount.HasValue) existingSale.TaxAmount = sale.TaxAmount.Value;
+                if (sale.PaymentMethod.HasValue) existingSale.PaymentMethod = sale.PaymentMethod.Value;
+                if (sale.Notes != null) existingSale.Notes = sale.Notes;
+                if (sale.CustomerName != null) existingSale.CustomerName = sale.CustomerName;
+                if (sale.CustomerEmail != null) existingSale.CustomerEmail = sale.CustomerEmail;
+                if (sale.CustomerPhone != null) existingSale.CustomerPhone = sale.CustomerPhone;
+
                 await _context.SaveChangesAsync();
                 return existingSale;
             }

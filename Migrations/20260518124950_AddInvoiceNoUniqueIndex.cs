@@ -5,25 +5,24 @@
 namespace DialDesk.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class AddImageUrlToModel : Migration
+    public partial class AddInvoiceNoUniqueIndex : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ImageryUrl",
-                table: "Models",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.CreateIndex(
+                name: "IX_Sales_InvoiceNo",
+                table: "Sales",
+                column: "InvoiceNo",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ImageryUrl",
-                table: "Models");
+            migrationBuilder.DropIndex(
+                name: "IX_Sales_InvoiceNo",
+                table: "Sales");
         }
     }
 }

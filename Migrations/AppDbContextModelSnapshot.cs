@@ -123,6 +123,9 @@ namespace DialDesk.Server.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("LowStockThreshold")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ModelName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -134,6 +137,12 @@ namespace DialDesk.Server.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("ModelName")
+                        .IsUnique();
+
+                    b.HasIndex("ModelNo")
+                        .IsUnique();
 
                     b.ToTable("Models");
                 });
@@ -251,6 +260,9 @@ namespace DialDesk.Server.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InvoiceNo")
+                        .IsUnique();
 
                     b.ToTable("Sales");
                 });
@@ -408,6 +420,9 @@ namespace DialDesk.Server.Migrations
                     b.HasIndex("ImportId");
 
                     b.HasIndex("ModelId");
+
+                    b.HasIndex("SerialNo")
+                        .IsUnique();
 
                     b.ToTable("Watches");
                 });
