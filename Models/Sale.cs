@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DialDesk.Server.Models
 {
+    [Index(nameof(InvoiceNo), IsUnique = true)]
     public class Sale
     {
         [Key]

@@ -1,4 +1,4 @@
-﻿using DialDesk.Server.Models;
+using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -7,8 +7,10 @@ namespace DialDesk.Server.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options) { }
 
+        // Entity tables
         public DbSet<User> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -20,6 +22,7 @@ namespace DialDesk.Server.Data
         public DbSet<SaleItem> SaleItems { get; set; }
         public DbSet<InventoryLog> InventoryLogs { get; set; }
         public DbSet<Warranty> Warranties { get; set; }
+        public DbSet<Return> Returns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,7 +33,7 @@ namespace DialDesk.Server.Data
             {
                 Id = 1,
                 Username = "admin",
-                Password = "admin123", // Change after first login
+                Password = "admin123",
                 Role = UserRole.Admin
             });
         }
