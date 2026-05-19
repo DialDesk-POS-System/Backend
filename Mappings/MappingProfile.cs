@@ -6,6 +6,7 @@ using DialDesk.Server.DTOs.ModelPriceRecord;
 using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Models;
+using DialDesk.Server.Pagination;
 
 namespace DialDesk.Server.Mappings
 {
@@ -51,6 +52,9 @@ namespace DialDesk.Server.Mappings
                 .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.Model != null ? src.Model.ModelName : null));
             CreateMap<ModelHistoryCreateDto, ModelPriceHistory>();
             CreateMap<ModelHistoryUpdateDto, ModelPriceHistory>();
+
+            // Pagination result
+            CreateMap(typeof(PagedResult<>), typeof(PagedResult<>));
         }
     }
 }

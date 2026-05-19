@@ -1,7 +1,9 @@
 using AutoMapper;
+using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
+using DialDesk.Server.Pagination;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DialDesk.Server.Controllers
@@ -20,10 +22,10 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WatchOutDto>>> GetAll()
+        public async Task<ActionResult<PagedResult<WatchOutDto>>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var watches = await _watchService.GetAllWatchesAsync();
-            return Ok(_mapper.Map<List<WatchOutDto>>(watches));
+            var watches = await _watchService.GetAllWatchesAsync(pageNumber, pageSize);
+            return Ok(_mapper.Map<PagedResult<WatchOutDto>>(watches));
         }
 
         [HttpGet("{id}")]
@@ -94,11 +96,41 @@ namespace DialDesk.Server.Controllers
             return NoContent();
         }
 
-        [HttpGet("search")]
-        public async Task<ActionResult<List<WatchOutDto>>> Search([FromQuery] WatchSearchDto filter)
+        [HttpPost("search")]
+        public async Task<ActionResult<List<SearchGroupResultDto>>> Search([FromBody] WatchSearchDto filter)
         {
             var watches = await _watchService.SearchWatchesAsync(filter);
-            return Ok(_mapper.Map<List<WatchOutDto>>(watches));
+
+            var mappedWatches = _mapper.Map<List<WatchOutDto>>(watches);
+            if (!string.IsNullOrWhiteSpace(filter.SearchQuery))
+            {
+                var exactMatch = mappedWatches.FirstOrDefault(w => string.Equals(w.SerialNo, filter.SearchQuery, StringComparison.OrdinalIgnoreCase));
+                if (exactMatch != null)
+                {
+                    return Ok(new List<SearchGroupResultDto>
+                    {
+                        new SearchGroupResultDto { Type = "watch", Item = exactMatch }
+                    });
+                }
+            }
+
+            var groups = mappedWatches.GroupBy(w => w.ModelId).ToList();
+            var result = new List<SearchGroupResultDto>();
+
+            foreach (var group in groups)
+            {
+                var list = group.ToList();
+                if (list.Count == 1)
+                {
+                    result.Add(new SearchGroupResultDto { Type = "watch", Item = list[0] });
+                }
+                else
+                {
+                    result.Add(new SearchGroupResultDto { Type = "model", Items = list, FirstItem = list[0] });
+                }
+            }
+
+            return Ok(result);
         }
     }
 }

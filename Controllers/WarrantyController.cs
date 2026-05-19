@@ -110,7 +110,7 @@ namespace DialDesk.Server.Controllers
             try
             {
                 var deleted = await _warrantyService.DeleteWarrentyAsync(warrantyId);
-                if(!deleted)
+                if (!deleted)
                     return NotFound();
 
                 return Ok();

@@ -1,12 +1,13 @@
 ﻿using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Models;
+using DialDesk.Server.Pagination;
 
 namespace DialDesk.Server.Interfaces
 {
     public interface IWatchService
     {
-        Task<List<Watch>> GetAllWatchesAsync();
+        Task<PagedResult<Watch>> GetAllWatchesAsync(int pageNumber = 1, int pageSize = 10);
         Task<Watch?> GetWatchByIdAsync(Guid id);
         Task<List<Watch>> GetWatchesByModelAsync(int modelId);
         Task<List<Watch>> GetWatchesByBrandAsync(int brandId);

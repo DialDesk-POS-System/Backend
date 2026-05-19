@@ -1,7 +1,9 @@
 using DialDesk.Server.Data;
+using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
+using DialDesk.Server.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace DialDesk.Server.Services
@@ -22,11 +24,25 @@ namespace DialDesk.Server.Services
             _logger = logger;
         }
 
-        public async Task<List<Watch>> GetAllWatchesAsync()
+        public async Task<PagedResult<Watch>> GetAllWatchesAsync(int pageNumber = 1, int pageSize = 20)
         {
             try
             {
-                return await WatchesWithDetailsQuery.ToListAsync();
+                var query = WatchesWithDetailsQuery.AsQueryable();
+
+                var totalCount = await query.CountAsync();
+                var items = await query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return new PagedResult<Watch>
+                {
+                    Items = items,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalCount = totalCount
+                };
             }
             catch (Exception ex)
             {
@@ -219,6 +235,27 @@ namespace DialDesk.Server.Services
             {
                 var query = WatchesWithDetailsQuery.AsQueryable();
 
+                if (!string.IsNullOrWhiteSpace(filter.SearchQuery))
+                {
+                    var exactMatch = query.Where(w => w.SerialNo == filter.SearchQuery);
+                    if (exactMatch.Any())
+                    {
+                        return await exactMatch.ToListAsync();
+                    }
+
+                    var queryWords = filter.SearchQuery.ToLower().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var word in queryWords)
+                    {
+                        query = query.Where(w =>
+                            w.Model.ModelName.ToLower().Contains(word) ||
+                            w.Model.ModelNo.ToLower().Contains(word) ||
+                            w.Model.Brand.Name.ToLower().Contains(word) ||
+                            (w.SerialNo != null && w.SerialNo.ToLower().Contains(word))
+                        );
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(filter.ModelName))
                 {
                     query = query.Where(w => w.Model.ModelName.Contains(filter.ModelName));
@@ -241,7 +278,7 @@ namespace DialDesk.Server.Services
 
                 if (!string.IsNullOrWhiteSpace(filter.SerialNo))
                 {
-                    query = query.Where(w => w.SerialNo.Contains(filter.SerialNo));
+                    query = query.Where(w => w.SerialNo != null && w.SerialNo.Contains(filter.SerialNo));
                 }
 
                 if (!string.IsNullOrEmpty(filter.Color))
