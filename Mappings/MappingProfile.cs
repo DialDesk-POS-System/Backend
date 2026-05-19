@@ -1,8 +1,10 @@
 using AutoMapper;
 using DialDesk.Server.DTOs;
 using DialDesk.Server.DTOs.Brand;
+using DialDesk.Server.DTOs.BulkImport;
 using DialDesk.Server.DTOs.Model;
 using DialDesk.Server.DTOs.ModelPriceRecord;
+using DialDesk.Server.DTOs.Return;
 using DialDesk.Server.DTOs.Sale;
 using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Models;
@@ -18,6 +20,10 @@ namespace DialDesk.Server.Mappings
             CreateMap<Brand, BrandOutDto>();
             CreateMap<BrandCreateDto, Brand>();
             CreateMap<BrandUpdateDto, Brand>();
+
+            CreateMap<BulkImportCreateDto, BulkImport>();
+
+            CreateMap<ReturnInDto, Return>();
 
             // Model
             CreateMap<Models.Model, ModelOutDto>()

@@ -1,4 +1,7 @@
-﻿using DialDesk.Server.Data;
+﻿using AutoMapper;
+using DialDesk.Server.Data;
+using DialDesk.Server.DTOs.BulkImport;
+using DialDesk.Server.DTOs.Watch;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +13,13 @@ namespace DialDesk.Server.Services
     {
         public readonly AppDbContext _context;
         public readonly ILogger<ReturnService> _logger;
+        private readonly IMapper _mapper;
 
-        public BulkImportService(AppDbContext context, ILogger<ReturnService> logger)
+        public BulkImportService(AppDbContext context, IMapper mapper, ILogger<ReturnService> logger)
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<List<BulkImport>> GetAllAsync()
@@ -22,7 +27,6 @@ namespace DialDesk.Server.Services
             try
             {
                 return await _context.BulkImports
-                    .Include(b => b.Watches)
                     .ToListAsync();
 
             }
@@ -34,15 +38,41 @@ namespace DialDesk.Server.Services
         }
 
 
-        public async Task<BulkImport> CreateImportAsync(BulkImport bulkImport)
+        public async Task<BulkImport> CreateImportAsync(BulkImportCreateDto dto)
         {
             try
             {
+                var bulkImport = _mapper.Map<BulkImport>(dto);
+                
                 _context.BulkImports.Add(bulkImport);
                 await _context.SaveChangesAsync();
-                return bulkImport;
 
-            }
+                var watches = new List<Watch>();
+
+                foreach (var w in dto.Watches)
+                {
+                    for (int i = 0; i < w.Quantity; i++)
+                    {
+                        var watch = _mapper.Map<Watch>(w);
+
+                        watch.ImportId = bulkImport.Id;
+                        watch.Status = Status.Available;
+
+                        watch.RecievedAt =
+                            DateTime.UtcNow;
+
+                        watch.UpdatedAt =
+                            DateTime.UtcNow;
+
+                        watches.Add(watch);
+                    }
+                }
+                    _context.Watches.AddRange(watches);
+                    await _context.SaveChangesAsync();
+
+                    return bulkImport;
+
+                }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "error in BulkImports when CreateImportAsync");
@@ -50,6 +80,7 @@ namespace DialDesk.Server.Services
             }
 
         }
+
         public async Task<BulkImport?> GetByIdAsync(int id)
         {
             try

@@ -1,4 +1,5 @@
 ﻿namespace DialDesk.Server.Models
+
 {
     public enum PaymentMethod
     {

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Dependency Injection Services
 builder.Services.AddScoped<IWatchService, WatchService>();
 builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<IWarrantyService, WarrantyService>();
@@ -18,15 +19,17 @@ builder.Services.AddScoped<IModelPriceHistoryService, ModelPriceHistroyService>(
 builder.Services.AddScoped<IModelService, ModelService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
+// AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins(
-            "http://localhost:3000", 
-            "http://localhost:5173", 
+            "http://localhost:3000",
+            "http://localhost:5173",
             "http://localhost:4200",
             "http://localhost:5174",
             "http://localhost:8080"
@@ -37,7 +40,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add services to the container.
+// Controllers + JSON enum support
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -48,32 +51,40 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register AppDbContext with Supabase PostgreSQL connection
+// Database
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Auto-apply pending EF Core migrations on startup
+// Auto-apply migrations
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var db = scope.ServiceProvider
+        .GetRequiredService<AppDbContext>();
+
     db.Database.Migrate();
+
+    // Uncomment only if SeedData class exists
+    // SeedData.Initialize(db);
 }
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
+// Middleware
+app.UseHttpsRedirection();
 
 app.UseCors("AllowFrontend");
+
+app.UseAuthorization();
 
 app.MapControllers();
 

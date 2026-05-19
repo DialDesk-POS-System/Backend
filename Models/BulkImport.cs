@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DialDesk.Server.Models
 {
@@ -15,6 +16,7 @@ namespace DialDesk.Server.Models
 
         public string? Supplier { get; set; }
 
+        [JsonIgnore]
         public List<Watch> Watches { get; set; } = [];
     }
 }
