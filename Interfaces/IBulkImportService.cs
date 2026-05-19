@@ -1,10 +1,11 @@
-﻿using DialDesk.Server.Models;
+﻿using DialDesk.Server.DTOs.BulkImport;
+using DialDesk.Server.Models;
 
 namespace DialDesk.Server.Interfaces
 {
     public interface IBulkImportService
     {
-        Task<BulkImport> CreateImportAsync(BulkImport bulkImport);
+        Task<BulkImport> CreateImportAsync(BulkImportCreateDto dto);
         Task<BulkImport?> GetByIdAsync(int id);
         Task<List<BulkImport>> GetAllAsync();
         Task<bool> UpdateAsync(int id, BulkImport bulkImport);

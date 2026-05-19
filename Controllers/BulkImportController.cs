@@ -1,4 +1,5 @@
-﻿using DialDesk.Server.Interfaces;
+﻿using DialDesk.Server.DTOs.BulkImport;
+using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,10 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateImportAsync(BulkImport bulkImport) { 
+        public async Task<IActionResult> CreateImportAsync(BulkImportCreateDto dto) { 
                 try
                 {
-                    var createdImport = await _bulkImportService.CreateImportAsync(bulkImport);
+                    var createdImport = await _bulkImportService.CreateImportAsync(dto);
                     return Ok(createdImport);
                 }
                 catch (Exception ex)
