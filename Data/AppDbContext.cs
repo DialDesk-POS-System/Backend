@@ -13,7 +13,6 @@ namespace DialDesk.Server.Data
         // Entity tables
         public DbSet<User> Users { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<Category> Categories { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<ModelPriceHistory> ModelPriceHistories { get; set; }
         public DbSet<Watch> Watches { get; set; }
