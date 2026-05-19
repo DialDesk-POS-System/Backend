@@ -4,6 +4,7 @@ namespace DialDesk.Server.DTOs.Watch;
 
 public class WatchSearchDto
 {
+    public string? SearchQuery { get; set; }
     public string? ModelName { get; set; }
     public string? ModelNo { get; set; }
     public string? BrandName { get; set; }
