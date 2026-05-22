@@ -35,8 +35,43 @@ namespace DialDesk.Server.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPaginated(
+                int page = 1,
+                int pageSize = 10
+            )
+        {
+            try
+            {
+                var result = await _warrantyService
+                    .GetPaginatedAsync(page, pageSize);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetDashboard()
+        {
+            try
+            {
+                var data = await _warrantyService.GetDashboardDataAsync();
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateWarrantyAsync(Warranty warranty)
+        public async Task<IActionResult> CreateWarranty(Warranty warranty)
         {
             try
             {

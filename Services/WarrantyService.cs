@@ -1,6 +1,10 @@
 ﻿using DialDesk.Server.Data;
+using DialDesk.Server.DTOs;
+using DialDesk.Server.DTOs.Warranty;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
+using DialDesk.Server.Pagination;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace DialDesk.Server.Services
@@ -14,6 +18,93 @@ namespace DialDesk.Server.Services
         {
             _db = db;
             _logger = logger;
+
+        }
+
+        public async Task<PagedResult<WarrantyOutDto>> GetPaginatedAsync(int page, int pageSize)
+        {
+            try
+            {
+                var totalCount = await _db.Warranties.CountAsync();
+
+                var warrenties = await _db.Warranties
+                     .Include(w => w.SaleItem)
+                        .ThenInclude(si => si.Sale)
+                    .OrderByDescending(w => w.Id)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                var items = warrenties.Select(w => new WarrantyOutDto
+                {
+                    Id = w.Id,
+                    SaleItemId = w.SaleItemId,
+                    InvoiceNo = w.SaleItem.Sale.InvoiceNo,
+                    ClaimDate = w.ClaimDate,
+                    EndDate = w.EndDate,
+                    Status =
+                        w.IsClaimed ? "Claimed" :
+                        w.EndDate < DateTime.UtcNow ? "Expired" :
+                        w.EndDate <= DateTime.UtcNow.AddDays(30) ? "Expiring" : "Active"
+
+
+                }).ToList();
+
+                return new PagedResult<WarrantyOutDto>
+                {
+                    Items = items,
+                    TotalCount = totalCount,
+                    PageNumber = page,
+                    PageSize = pageSize,
+                    
+                };
+
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error Creating WarrantyAsync");
+                throw;
+            }
+
+
+        }
+
+        public async Task<WarrantyDashboardDto> GetDashboardDataAsync()
+        {
+            var now = DateTime.UtcNow;
+
+            try
+            {
+                var activeCount = await _db.Warranties.CountAsync(
+                   W => W.EndDate > now && !W.IsClaimed
+                       );
+                var expiring30Count = await _db.Warranties
+                    .CountAsync(w =>
+                        w.EndDate > now &&
+                        w.EndDate <= now.AddDays(30) &&
+                        !w.IsClaimed);
+                var expiredCount = await _db.Warranties
+                       .CountAsync(w =>
+                           w.EndDate < now);
+                var claimedCount = await _db.Warranties
+                      .CountAsync(w =>
+                          w.IsClaimed);
+
+                return new WarrantyDashboardDto
+                {
+                    ActiveCount = activeCount,
+                    Expiring30DaysCount = expiring30Count,
+                    ExpiredCount = expiredCount,
+                    ClaimedCount = claimedCount,
+
+                };
+
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error Creating WarrantyAsync");
+                throw;
+            }
 
         }
 
@@ -39,7 +130,7 @@ namespace DialDesk.Server.Services
             try
             {
             return await _db.Warranties
-                .Include(w => w.Watch)
+                //.Include(w => w.Watch)
                 .Include(w => w.SaleItem)
                 .FirstOrDefaultAsync(w => w.Id == id);
 
@@ -57,7 +148,7 @@ namespace DialDesk.Server.Services
             try
             {
             return await _db.Warranties
-                .Include(w => w.Watch)
+                //.Include(w => w.Watch)
                 .Include(w => w.SaleItem)
                 .FirstOrDefaultAsync(w => w.SaleItemId == saleItemId);
 
@@ -74,9 +165,9 @@ namespace DialDesk.Server.Services
             try
             {
             return await _db.Warranties
-                .Include(w => w.Watch)
+                //.Include(w => w.Watch)
                 .Include(w => w.SaleItem)
-                .FirstOrDefaultAsync(w => w.WatchId == watchId);
+                .FirstOrDefaultAsync();
 
             }
             catch (Exception ex)
@@ -95,6 +186,7 @@ namespace DialDesk.Server.Services
 
             if (warranty != null)
             {
+                warranty.IsClaimed = true;
                 warranty.ClaimDate = claimDate;
                 await _db.SaveChangesAsync();
             }

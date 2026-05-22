@@ -15,11 +15,14 @@ namespace DialDesk.Server.Models
         [ForeignKey("SaleItemId")]
         public SaleItem SaleItem { get; set; }
 
-        [Required]
-        public Guid WatchId { get; set; }
+        //[Required]
+        //public Guid WatchId { get; set; }
 
-        [ForeignKey("WatchId")]
-        public Watch Watch { get; set; }
+        //[ForeignKey("WatchId")]
+        //public Watch Watch { get; set; }
+
+        [Required]
+        public bool IsClaimed { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; }
