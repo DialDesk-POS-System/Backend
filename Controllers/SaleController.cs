@@ -12,11 +12,13 @@ namespace DialDesk.Server.Controllers
     public class SaleController : ControllerBase
     {
         private readonly ISaleService _saleService;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
 
-        public SaleController(ISaleService saleService, IMapper mapper)
+        public SaleController(ISaleService saleService, IEmailService emailService, IMapper mapper)
         {
             _saleService = saleService;
+            _emailService = emailService;
             _mapper = mapper;
         }
 
@@ -73,5 +75,26 @@ namespace DialDesk.Server.Controllers
             if (!result) return NotFound();
             return NoContent();
         }
+
+        [HttpPost("{id:int}/send-email")]
+        public async Task<IActionResult> SendInvoiceEmail(int id)
+        {
+            var sale = await _saleService.GetSaleByIdAsync(id);
+            if (sale == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(sale.CustomerEmail))
+                return BadRequest("Customer email is not provided for this sale.");
+
+            await _emailService.SendInvoiceEmailAsync(
+                sale.CustomerEmail,
+                sale.CustomerName ?? "Valued Customer",
+                sale.InvoiceNo,
+                sale.TotalAmount,
+                sale.SaleItems
+            );
+
+            return Ok(new { message = $"Invoice email sent to {sale.CustomerEmail}" });
+        }
     }
 }
+

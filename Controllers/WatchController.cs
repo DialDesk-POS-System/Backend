@@ -97,7 +97,7 @@ namespace DialDesk.Server.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<ActionResult<List<SearchGroupResultDto>>> Search([FromBody] WatchSearchDto filter)
+        public async Task<ActionResult<PagedResult<SearchGroupResultDto>>> Search([FromBody] WatchSearchDto filter, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
         {
             var watches = await _watchService.SearchWatchesAsync(filter);
 
@@ -107,10 +107,11 @@ namespace DialDesk.Server.Controllers
                 var exactMatch = mappedWatches.FirstOrDefault(w => string.Equals(w.SerialNo, filter.SearchQuery, StringComparison.OrdinalIgnoreCase));
                 if (exactMatch != null)
                 {
-                    return Ok(new List<SearchGroupResultDto>
+                    var singleResult = new List<SearchGroupResultDto>
                     {
                         new SearchGroupResultDto { Type = "watch", Item = exactMatch }
-                    });
+                    };
+                    return Ok(new PagedResult<SearchGroupResultDto> { Items = singleResult, TotalCount = 1, PageNumber = 1, PageSize = pageSize });
                 }
             }
 
@@ -130,7 +131,13 @@ namespace DialDesk.Server.Controllers
                 }
             }
 
-            return Ok(result);
+            return Ok(new PagedResult<SearchGroupResultDto>
+            {
+                TotalCount = result.Count,
+                PageNumber = page,
+                PageSize = pageSize,
+                Items = result.Skip((page - 1) * pageSize).Take(pageSize).ToList()
+            });
         }
     }
 }

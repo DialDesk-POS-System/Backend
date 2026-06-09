@@ -1,8 +1,8 @@
-﻿using DialDesk.Server.Data;
+﻿using System.Threading.Tasks;
+using DialDesk.Server.Data;
 using DialDesk.Server.Interfaces;
 using DialDesk.Server.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace DialDesk.Server.Services
 {
@@ -33,7 +33,7 @@ namespace DialDesk.Server.Services
             }
         }
 
-        public async Task<InventoryLog> CreateLogAsync(InventoryLog log) 
+        public async Task<InventoryLog> CreateLogAsync(InventoryLog log)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace DialDesk.Server.Services
                     return false;
                 }
 
-                 _context.InventoryLogs.Remove(existLog);
+                _context.InventoryLogs.Remove(existLog);
                 await _context.SaveChangesAsync();
                 return true;
             }
