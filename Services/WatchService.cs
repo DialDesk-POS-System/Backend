@@ -258,17 +258,20 @@ namespace DialDesk.Server.Services
 
                 if (!string.IsNullOrEmpty(filter.ModelName))
                 {
-                    query = query.Where(w => w.Model.ModelName.Contains(filter.ModelName));
+                    var term = filter.ModelName.ToLower();
+                    query = query.Where(w => w.Model.ModelName.ToLower().Contains(term));
                 }
 
                 if (!string.IsNullOrWhiteSpace(filter.ModelNo))
                 {
-                    query = query.Where(w => w.Model.ModelNo.Contains(filter.ModelNo));
+                    var term = filter.ModelNo.ToLower();
+                    query = query.Where(w => w.Model.ModelNo.ToLower().Contains(term));
                 }
 
                 if (!string.IsNullOrWhiteSpace(filter.BrandName))
                 {
-                    query = query.Where(w => w.Model.Brand.Name.Contains(filter.BrandName));
+                    var term = filter.BrandName.ToLower();
+                    query = query.Where(w => w.Model.Brand.Name.ToLower().Contains(term));
                 }
 
                 if (filter.Category.HasValue)
@@ -278,16 +281,20 @@ namespace DialDesk.Server.Services
 
                 if (!string.IsNullOrWhiteSpace(filter.SerialNo))
                 {
-                    query = query.Where(w => w.SerialNo != null && w.SerialNo.Contains(filter.SerialNo));
+                    var term = filter.SerialNo.ToLower();
+                    query = query.Where(w => w.SerialNo != null && w.SerialNo.ToLower().Contains(term));
                 }
 
                 if (!string.IsNullOrEmpty(filter.Color))
                 {
-                    query = query.Where(w => w.Color == filter.Color);
+                    var term = filter.Color.ToLower();
+                    query = query.Where(w => w.Color != null && w.Color.ToLower().Contains(term));
                 }
+                
                 if (!string.IsNullOrEmpty(filter.StrapMaterial))
                 {
-                    query = query.Where(w => w.StrapMaterial == filter.StrapMaterial);
+                    var term = filter.StrapMaterial.ToLower();
+                    query = query.Where(w => w.StrapMaterial != null && w.StrapMaterial.ToLower().Contains(term));
                 }
 
                 return await query.ToListAsync();

@@ -18,6 +18,7 @@ builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IModelPriceHistoryService, ModelPriceHistroyService>();
 builder.Services.AddScoped<IModelService, ModelService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
